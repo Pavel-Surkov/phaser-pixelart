@@ -41,6 +41,8 @@ export class Game extends Scene {
     this.platforms.create(50, 250, 'ground');
     this.platforms.create(750, 220, 'ground');
 
+    this.cameras.main.setBounds(0, -500, 1024, 2048, true);
+
     const logoPlatform = this.physics.add.staticGroup();
     logoPlatform
       .create(512, 100, 'logo')
@@ -51,6 +53,7 @@ export class Game extends Scene {
     this.player = this.physics.add.sprite(100, 450, 'hero');
 
     this.player.setCollideWorldBounds(true);
+    this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.player, logoPlatform);
