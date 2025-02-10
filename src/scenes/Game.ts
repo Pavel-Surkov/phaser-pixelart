@@ -1,16 +1,16 @@
 import { Scene } from 'phaser';
+import { Player } from '../sprites/Player';
+import { Bombs } from '../groups/Bombs';
 
 export class Game extends Scene {
   constructor() {
     super('Game');
   }
 
-  cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-
   platforms: Phaser.Physics.Arcade.StaticGroup;
-  player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  player: Player;
   stars: Phaser.Physics.Arcade.Group;
-  bombs: Phaser.Physics.Arcade.Group;
+  bombs: Bombs;
   light: Phaser.GameObjects.PointLight;
 
   scoreText: Phaser.GameObjects.Text;
@@ -51,8 +51,7 @@ export class Game extends Scene {
       .setScale(0.9)
       .refreshBody();
 
-    this.player = this.physics.add.sprite(100, 450, 'hero');
-    this.player.setDepth(1);
+    this.player = new Player(this, 100, 450);
 
     this.light = this.lights.addPointLight(
       this.player.x,
@@ -63,39 +62,12 @@ export class Game extends Scene {
       0.07
     );
 
-    // this.player.setFlipX(true);
-
-    this.player.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
-
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.player, logoPlatform);
 
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNames('hero', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNames('hero', { start: 5, end: 8 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: 'turn',
-      frames: [{ key: 'hero', frame: 4 }],
-      frameRate: 20,
-    });
-
-    this.cursorKeys = this.input.keyboard!.createCursorKeys();
-
     this.createStars();
 
-    this.bombs = this.physics.add.group();
+    this.bombs = new Bombs(this.physics.world, this);
     this.physics.add.collider(this.bombs, this.platforms);
     this.physics.add.collider(
       this.player,
@@ -113,8 +85,7 @@ export class Game extends Scene {
 
   hitBomb() {
     this.physics.pause();
-    this.player.setTint(0xff0000);
-    this.player.anims.play('turn');
+    this.player.die();
     this.gameOver = true;
   }
 
@@ -152,34 +123,12 @@ export class Game extends Scene {
 
     if (this.stars.countActive(true) === 0) {
       this.createStars();
-
-      const x =
-        this.player.x < 400
-          ? Phaser.Math.Between(400, 800)
-          : Phaser.Math.Between(0, 400);
-
-      const bomb = this.bombs.create(x, 16, 'bomb');
-      bomb.setBounce(1);
-      bomb.setCollideWorldBounds(true);
-      bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      this.bombs.createBomb();
     }
   }
 
   update() {
-    if (this.cursorKeys.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play('left', true);
-    } else if (this.cursorKeys.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play('right', true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play('turn');
-    }
-
-    if (this.cursorKeys.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
-    }
+    this.player.update();
 
     // Connect light position to player's position
     this.light.setPosition(this.player.x, this.player.y);
