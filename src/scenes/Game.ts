@@ -11,6 +11,7 @@ export class Game extends Scene {
   player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   stars: Phaser.Physics.Arcade.Group;
   bombs: Phaser.Physics.Arcade.Group;
+  light: Phaser.GameObjects.PointLight;
 
   scoreText: Phaser.GameObjects.Text;
   score = 0;
@@ -51,6 +52,18 @@ export class Game extends Scene {
       .refreshBody();
 
     this.player = this.physics.add.sprite(100, 450, 'hero');
+    this.player.setDepth(1);
+
+    this.light = this.lights.addPointLight(
+      this.player.x,
+      this.player.y,
+      0xff0000,
+      50,
+      1,
+      0.07
+    );
+
+    // this.player.setFlipX(true);
 
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
@@ -145,7 +158,7 @@ export class Game extends Scene {
           ? Phaser.Math.Between(400, 800)
           : Phaser.Math.Between(0, 400);
 
-      var bomb = this.bombs.create(x, 16, 'bomb');
+      const bomb = this.bombs.create(x, 16, 'bomb');
       bomb.setBounce(1);
       bomb.setCollideWorldBounds(true);
       bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -167,5 +180,8 @@ export class Game extends Scene {
     if (this.cursorKeys.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
     }
+
+    // Connect light position to player's position
+    this.light.setPosition(this.player.x, this.player.y);
   }
 }
