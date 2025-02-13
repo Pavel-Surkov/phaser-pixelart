@@ -9,15 +9,19 @@ export class Game extends Scene {
     super(config);
   }
 
-  platforms: Phaser.Physics.Arcade.StaticGroup;
-  player: Player;
-  stars: Phaser.Physics.Arcade.Group;
-  bombs: Bombs;
-  light: Phaser.GameObjects.PointLight;
+  public platforms: Phaser.Physics.Arcade.StaticGroup;
+  public player: Player;
+  public stars: Phaser.Physics.Arcade.Group;
+  public bombs: Bombs;
+  public light: Phaser.GameObjects.PointLight;
 
-  scoreText: Phaser.GameObjects.Text;
-  score = 0;
-  gameOver = false;
+  public scoreText: Phaser.GameObjects.Text;
+  public score = 0;
+  public gameOver = false;
+
+  init() {
+    this.gameOver = false;
+  }
 
   preload() {
     const { load } = this;
@@ -135,6 +139,8 @@ export class Game extends Scene {
   }
 
   update() {
+    if (this.gameOver) return;
+
     this.player.update();
 
     // Connect light position to player's position

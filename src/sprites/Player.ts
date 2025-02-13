@@ -1,6 +1,6 @@
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  cursor: Phaser.Types.Input.Keyboard.CursorKeys;
-  dead: boolean = false;
+  private cursor: Phaser.Types.Input.Keyboard.CursorKeys;
+  public dead: boolean = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'hero');
