@@ -2,9 +2,11 @@ import { Scene } from 'phaser';
 import { Player } from '../sprites/Player';
 import { Bombs } from '../groups/Bombs';
 
+// Unique keys for each scene
+
 export class Game extends Scene {
-  constructor() {
-    super('Game');
+  constructor(config: Phaser.Types.Scenes.SettingsConfig) {
+    super(config);
   }
 
   platforms: Phaser.Physics.Arcade.StaticGroup;
