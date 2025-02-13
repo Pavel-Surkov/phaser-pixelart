@@ -18,14 +18,16 @@ export class Game extends Scene {
   gameOver = false;
 
   preload() {
-    this.load.setPath('assets');
+    const { load } = this;
 
-    this.load.image('background', 'bg.png');
-    this.load.image('logo', 'logo.png');
-    this.load.image('ground', 'platform.png');
-    this.load.image('star', 'star.png');
-    this.load.image('bomb', 'bomb.png');
-    this.load.spritesheet('hero', 'dude.png', {
+    load.setPath('assets');
+
+    load.image('background', 'bg.png');
+    load.image('logo', 'logo.png');
+    load.image('ground', 'platform.png');
+    load.image('star', 'star.png');
+    load.image('bomb', 'bomb.png');
+    load.spritesheet('hero', 'dude.png', {
       frameWidth: 32,
       frameHeight: 48,
     });
@@ -69,7 +71,7 @@ export class Game extends Scene {
 
     this.bombs = new Bombs(this.physics.world, this);
     this.physics.add.collider(this.bombs, this.platforms);
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.player,
       this.bombs,
       this.hitBomb,
@@ -107,8 +109,8 @@ export class Game extends Scene {
     this.physics.add.overlap(
       this.player,
       this.stars,
-      this.collectStar,
       undefined,
+      this.collectStar,
       this
     );
   }
@@ -125,6 +127,9 @@ export class Game extends Scene {
       this.createStars();
       this.bombs.createBomb();
     }
+
+    // Return false to not process the collision so player.body?.touching.down doesn't work when player jumps on a star
+    return false;
   }
 
   update() {

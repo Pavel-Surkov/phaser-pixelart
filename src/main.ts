@@ -21,6 +21,7 @@ const config: Types.Core.GameConfig = {
     },
   },
   scale: {
+    parent: 'game-container',
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
   },
