@@ -1,4 +1,4 @@
-import { BgLayers } from '@scenes/Game';
+import { BgLayers, CustomCursorKeys } from '@scenes/Game';
 
 export class Background extends Phaser.GameObjects.Group {
   private layers: Phaser.GameObjects.TileSprite[];
@@ -32,7 +32,7 @@ export class Background extends Phaser.GameObjects.Group {
     this.scaleXY(0.5, 0.5);
   }
 
-  update(cursor: Phaser.Types.Input.Keyboard.CursorKeys) {
+  update(cursor: CustomCursorKeys) {
     if (cursor.left.isDown) {
       this.layers[4].tilePositionX -=
         this.scene.registry.get('backgroundVelocityX') * 0.1;

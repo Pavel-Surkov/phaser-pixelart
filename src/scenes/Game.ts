@@ -21,12 +21,19 @@ export enum BgLayers {
   LIGHT_TWO = 'background_lights_2',
 }
 
+export type CustomCursorKeys = {
+  up: Phaser.Input.Keyboard.Key;
+  down: Phaser.Input.Keyboard.Key;
+  left: Phaser.Input.Keyboard.Key;
+  right: Phaser.Input.Keyboard.Key;
+};
+
 export class Game extends Scene {
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
   }
 
-  private cursor: Phaser.Types.Input.Keyboard.CursorKeys;
+  private cursor: CustomCursorKeys;
 
   private background: Background;
   private foreground: Foreground;
@@ -92,7 +99,12 @@ export class Game extends Scene {
     const invisibleFloor = new InvisibleFloor(this);
     this.physics.add.collider(this.player, invisibleFloor);
 
-    this.cursor = this.input.keyboard!.createCursorKeys();
+    this.cursor = this.input.keyboard!.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+    }) as CustomCursorKeys;
   }
 
   update() {

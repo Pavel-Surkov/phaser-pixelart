@@ -1,3 +1,5 @@
+import { CustomCursorKeys } from '@scenes/Game';
+
 enum PlayerStates {
   ALIVE = 'ALIVE',
   DEAD = 'DEAD',
@@ -71,7 +73,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
   }
 
-  update(cursor: Phaser.Types.Input.Keyboard.CursorKeys) {
+  update(cursor: CustomCursorKeys) {
     if (this.state === PlayerStates.DEAD) {
       return;
     }
