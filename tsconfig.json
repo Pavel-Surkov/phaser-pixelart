@@ -16,7 +16,13 @@
     "strictPropertyInitialization": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "src",
+    "paths": {
+      "@scenes/*": ["./scenes/*"],
+      "@sprites/*": ["./sprites/*"]
+    }
   },
   "include": ["src"]
 }

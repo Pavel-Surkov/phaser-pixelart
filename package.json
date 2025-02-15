@@ -22,7 +22,8 @@
     "devDependencies": {
         "terser": "^5.31.0",
         "typescript": "^5.4.5",
-        "vite": "^5.3.1"
+        "vite": "^5.3.1",
+        "vite-tsconfig-paths": "^5.1.4"
     },
     "dependencies": {
         "phaser": "^3.87.0"
