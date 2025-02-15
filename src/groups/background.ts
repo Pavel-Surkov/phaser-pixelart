@@ -32,7 +32,7 @@ export class Background extends Phaser.GameObjects.Group {
     this.scaleXY(0.5, 0.5);
   }
 
-  update() {
+  update(cursor: Phaser.Types.Input.Keyboard.CursorKeys) {
     this.layers[4].tilePositionX += 0.02;
     this.layers[5].tilePositionX += 0.07;
     this.layers[6].tilePositionX += 0.1;

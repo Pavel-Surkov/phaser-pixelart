@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { Player, PlayerSprites } from '@sprites/Player';
 import { Background } from '@groups/background';
 import { Foreground } from '@groups/foreground';
+import { InvisibleFloor } from '@sprites/InvisibleFloor';
 
 // TODO: Add HUD with a witch gif
 
@@ -25,8 +26,11 @@ export class Game extends Scene {
     super(config);
   }
 
+  private cursor: Phaser.Types.Input.Keyboard.CursorKeys;
+
   private background: Background;
   private foreground: Foreground;
+
   public player: Player;
   public gameOver = false;
 
@@ -56,10 +60,9 @@ export class Game extends Scene {
 
     load.setPath('assets');
 
+    this.loadBackgroundAssets();
     load.audio('loop', '/audio/loop.ogg');
     load.image('logo', 'logo.png');
-
-    this.loadBackgroundAssets();
 
     load.spritesheet(PlayerSprites.IDLE, '/witch/B_witch_idle.png', {
       frameWidth: 32,
@@ -86,25 +89,17 @@ export class Game extends Scene {
       ...this.foreground.getChildren(),
     ]);
 
-    // Empty texture
-    const invisibleFloor = this.physics.add.staticSprite(
-      this.scale.width / 2,
-      this.scale.height - 20,
-      // @ts-ignore
-      null
-    );
-    invisibleFloor.setVisible(false);
-    invisibleFloor.body.setSize(this.scale.width, 40);
-    invisibleFloor.setDebug(false, false, 0x000);
-
+    const invisibleFloor = new InvisibleFloor(this);
     this.physics.add.collider(this.player, invisibleFloor);
+
+    this.cursor = this.input.keyboard!.createCursorKeys();
   }
 
   update() {
     if (this.gameOver) return;
 
-    this.background.update();
-    this.player.update();
-    this.foreground.update();
+    this.background.update(this.cursor);
+    this.player.update(this.cursor);
+    this.foreground.update(this.cursor);
   }
 }
