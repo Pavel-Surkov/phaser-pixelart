@@ -10,6 +10,7 @@ export enum PlayerSprites {
   RUN = 'player_run',
   DEATH = 'player_death',
   CHARGE = 'player_charge',
+  ICON = 'player_icon',
 }
 
 export enum PlayerAnims {
@@ -49,6 +50,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: -1,
     });
+
+    scene.anims.create({
+      key: 'hero_icon',
+      frames: this.anims.generateFrameNames(PlayerSprites.ICON),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    scene.add
+      .sprite(60, 60, 'hero_icon')
+      .setScale(1.5)
+      .setDepth(2)
+      .play('hero_icon');
 
     scene.cameras.main.startFollow(this, false, 0.1, 0.1);
     scene.cameras.main.setDeadzone(0, 0);

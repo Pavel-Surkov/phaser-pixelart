@@ -71,6 +71,10 @@ export class Game extends Scene {
     load.audio('loop', '/audio/loop.ogg');
     load.image('logo', 'logo.png');
 
+    load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
+      frameWidth: 50,
+      frameHeight: 50,
+    });
     load.spritesheet(PlayerSprites.IDLE, '/witch/B_witch_idle.png', {
       frameWidth: 32,
       frameHeight: 48,

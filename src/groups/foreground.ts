@@ -6,8 +6,6 @@ export class Foreground extends Phaser.GameObjects.Group {
   constructor(scene: Phaser.Scene) {
     super(scene, [], {});
 
-    this.setDepth(0);
-
     // x, y, width and height parameters for tileSprite
     const [x, y, w, h]: [number, number, number, number] = [
       this.scene.scale.width / 2,
