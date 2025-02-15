@@ -1,4 +1,3 @@
-import { GameData } from '@constants/game';
 import { Game as MainGame } from '@scenes/Game';
 import { AUTO, Game, Scale, Types } from 'phaser';
 
@@ -11,8 +10,8 @@ enum SceneKeys {
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
-  width: GameData.width,
-  height: GameData.height,
+  width: 1280,
+  height: 720,
   parent: 'game-container',
   backgroundColor: '#028af8',
   physics: {
@@ -30,6 +29,7 @@ const config: Types.Core.GameConfig = {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
   },
+  pixelArt: true,
   scene: [new MainGame({ key: SceneKeys.GAME })],
 };
 

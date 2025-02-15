@@ -1,16 +1,49 @@
 import { Scene } from 'phaser';
 import { Player, PlayerSprites } from '@sprites/Player';
-import { GameData } from '@constants/game';
+import { Background } from 'groups/background';
 
 // TODO: Add HUD with a witch gif
+
+export enum BgLayers {
+  ZERO = 'background_0',
+  ONE = 'background_1',
+  TWO = 'background_2',
+  THREE = 'background_3',
+  FOUR = 'background_4',
+  FIVE = 'background_5',
+  SIX = 'background_6',
+  SEVEN = 'background_7',
+  EIGHT = 'background_8',
+  NINE = 'background_9',
+  LIGHT_ONE = 'background_lights_1',
+  LIGHT_TWO = 'background_lights_2',
+}
 
 export class Game extends Scene {
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
   }
 
+  private background: Background;
   public player: Player;
   public gameOver = false;
+
+  loadBackgroundAssets() {
+    const { load } = this;
+
+    load.image(BgLayers.ZERO, '/background/Layer_0011_0.png');
+    load.image(BgLayers.ONE, '/background/Layer_0010_1.png');
+    load.image(BgLayers.TWO, '/background/Layer_0009_2.png');
+    load.image(BgLayers.THREE, '/background/Layer_0008_3.png');
+    load.image(BgLayers.LIGHT_ONE, '/background/Layer_0007_Lights.png');
+    load.image(BgLayers.FOUR, '/background/Layer_0006_4.png');
+    load.image(BgLayers.FIVE, '/background/Layer_0005_5.png');
+    load.image(BgLayers.LIGHT_TWO, '/background/Layer_0004_Lights.png');
+    load.image(BgLayers.SIX, '/background/Layer_0003_6.png');
+    load.image(BgLayers.SEVEN, '/background/Layer_0002_7.png');
+    load.image(BgLayers.EIGHT, '/background/Layer_0001_8.png');
+    load.image(BgLayers.NINE, '/background/Layer_0000_9.png');
+  }
 
   init() {
     this.gameOver = false;
@@ -24,36 +57,50 @@ export class Game extends Scene {
     load.image('sky', 'sky.png');
     load.image('logo', 'logo.png');
 
-    load.spritesheet(PlayerSprites.IDLE, './witch/B_witch_idle.png', {
+    this.loadBackgroundAssets();
+
+    load.spritesheet(PlayerSprites.IDLE, '/witch/B_witch_idle.png', {
       frameWidth: 32,
       frameHeight: 48,
     });
-    load.spritesheet(PlayerSprites.RUN, './witch/B_witch_run.png', {
+    load.spritesheet(PlayerSprites.RUN, '/witch/B_witch_run.png', {
       frameWidth: 32,
       frameHeight: 48,
     });
   }
 
   create() {
-    const skyImage = this.add.image(
-      GameData.width / 2,
-      GameData.height / 2,
-      'sky'
+    this.add.image(this.scale.width / 2, 100, 'logo');
+
+    this.cameras.main.setBounds(
+      0,
+      0,
+      this.scale.width,
+      this.scale.height,
+      true
     );
-    skyImage.setScale(GameData.width / skyImage.width);
 
-    this.cameras.main.setBounds(0, 0, GameData.width, GameData.height, true);
-
-    this.add.image(GameData.width / 2, 100, 'logo');
-
+    this.background = new Background(this);
     this.player = new Player(this, 100, 450);
 
-    // this.physics.add.collider(this.player, this.platforms);
+    // Empty texture
+    const invisibleFloor = this.physics.add.staticSprite(
+      this.scale.width / 2,
+      this.scale.height - 20,
+      // @ts-ignore
+      null
+    );
+    invisibleFloor.setVisible(false);
+    invisibleFloor.body.setSize(this.scale.width, 40);
+    invisibleFloor.setDebug(false, false, 0x000);
+
+    this.physics.add.collider(this.player, invisibleFloor);
   }
 
-  update() {
+  update(time: number, delta: number) {
     if (this.gameOver) return;
 
+    this.background.update();
     this.player.update();
   }
 }
