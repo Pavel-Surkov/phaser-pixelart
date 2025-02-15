@@ -7,9 +7,9 @@ export class Background extends Phaser.GameObjects.Group {
     super(scene, [], {});
 
     // x, y, width and height parameters for tileSprite
-    const [x, y, w, h] = [
+    const [x, y, w, h]: [number, number, number, number] = [
       this.scene.scale.width / 2,
-      this.scene.scale.height / 2 - 180,
+      this.scene.scale.height / 2 - 200,
       this.scene.scale.width,
       this.scene.scale.height + 60,
     ];
@@ -26,7 +26,6 @@ export class Background extends Phaser.GameObjects.Group {
       this.scene.add.tileSprite(x, y, w, h, BgLayers.SIX),
       this.scene.add.tileSprite(x, y, w, h, BgLayers.SEVEN),
       this.scene.add.tileSprite(x, y, w, h, BgLayers.EIGHT),
-      this.scene.add.tileSprite(x, y, w, h, BgLayers.NINE),
     ];
 
     this.addMultiple(this.layers);
@@ -41,6 +40,5 @@ export class Background extends Phaser.GameObjects.Group {
     this.layers[8].tilePositionX += 0.15;
     this.layers[9].tilePositionX += 0.18;
     this.layers[10].tilePositionX += 0.2;
-    this.layers[11].tilePositionX += 0.24;
   }
 }

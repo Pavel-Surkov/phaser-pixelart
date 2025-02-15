@@ -22,7 +22,8 @@
     "paths": {
       "@constants/*": ["./constants/*"],
       "@scenes/*": ["./scenes/*"],
-      "@sprites/*": ["./sprites/*"]
+      "@sprites/*": ["./sprites/*"],
+      "@groups/*": ["./groups/*"]
     }
   },
   "include": ["src"]

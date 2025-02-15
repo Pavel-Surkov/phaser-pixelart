@@ -21,7 +21,7 @@ const config: Types.Core.GameConfig = {
         y: 500,
         x: 0,
       },
-      debug: true,
+      debug: import.meta.env.DEV,
     },
   },
   scale: {

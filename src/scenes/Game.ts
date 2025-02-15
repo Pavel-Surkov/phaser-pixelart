@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { Player, PlayerSprites } from '@sprites/Player';
-import { Background } from 'groups/background';
+import { Background } from '@groups/background';
+import { Foreground } from '@groups/foreground';
 
 // TODO: Add HUD with a witch gif
 
@@ -25,6 +26,7 @@ export class Game extends Scene {
   }
 
   private background: Background;
+  private foreground: Foreground;
   public player: Player;
   public gameOver = false;
 
@@ -54,7 +56,7 @@ export class Game extends Scene {
 
     load.setPath('assets');
 
-    load.image('sky', 'sky.png');
+    load.audio('loop', '/audio/loop.ogg');
     load.image('logo', 'logo.png');
 
     this.loadBackgroundAssets();
@@ -70,7 +72,8 @@ export class Game extends Scene {
   }
 
   create() {
-    this.add.image(this.scale.width / 2, 100, 'logo');
+    this.sound.play('loop');
+    this.add.image(this.scale.width / 2, 100, 'logo').setDepth(100);
 
     this.cameras.main.setBounds(
       0,
@@ -81,7 +84,15 @@ export class Game extends Scene {
     );
 
     this.background = new Background(this);
-    this.player = new Player(this, 100, 450);
+    this.player = new Player(this, this.scale.width / 2, 450);
+    this.foreground = new Foreground(this);
+
+    const layer = this.add.layer();
+    layer.add([
+      ...this.background.getChildren(),
+      this.player,
+      ...this.foreground.getChildren(),
+    ]);
 
     // Empty texture
     const invisibleFloor = this.physics.add.staticSprite(
@@ -97,10 +108,11 @@ export class Game extends Scene {
     this.physics.add.collider(this.player, invisibleFloor);
   }
 
-  update(time: number, delta: number) {
+  update() {
     if (this.gameOver) return;
 
     this.background.update();
     this.player.update();
+    this.foreground.update();
   }
 }
