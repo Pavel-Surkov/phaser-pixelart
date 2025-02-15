@@ -23,6 +23,12 @@ export class Foreground extends Phaser.GameObjects.Group {
   }
 
   update(cursor: Phaser.Types.Input.Keyboard.CursorKeys) {
-    this.layers[0].tilePositionX += 0.24;
+    if (cursor.left.isDown) {
+      this.layers[0].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 1.15;
+    } else if (cursor.right.isDown) {
+      this.layers[0].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 1.15;
+    }
   }
 }

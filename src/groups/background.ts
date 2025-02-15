@@ -4,7 +4,7 @@ export class Background extends Phaser.GameObjects.Group {
   private layers: Phaser.GameObjects.TileSprite[];
 
   constructor(scene: Phaser.Scene) {
-    super(scene, [], {});
+    super(scene);
 
     // x, y, width and height parameters for tileSprite
     const [x, y, w, h]: [number, number, number, number] = [
@@ -33,12 +33,38 @@ export class Background extends Phaser.GameObjects.Group {
   }
 
   update(cursor: Phaser.Types.Input.Keyboard.CursorKeys) {
-    this.layers[4].tilePositionX += 0.02;
-    this.layers[5].tilePositionX += 0.07;
-    this.layers[6].tilePositionX += 0.1;
-    this.layers[7].tilePositionX += 0.12;
-    this.layers[8].tilePositionX += 0.15;
-    this.layers[9].tilePositionX += 0.18;
-    this.layers[10].tilePositionX += 0.2;
+    if (cursor.left.isDown) {
+      this.layers[4].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.1;
+      this.layers[5].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.4;
+      this.layers[6].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.6;
+      this.layers[7].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.7;
+      this.layers[8].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.8;
+      this.layers[9].tilePositionX -=
+        this.scene.registry.get('backgroundVelocityX') * 0.9;
+      this.layers[10].tilePositionX -= this.scene.registry.get(
+        'backgroundVelocityX'
+      );
+    } else if (cursor.right.isDown) {
+      this.layers[4].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.1;
+      this.layers[5].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.4;
+      this.layers[6].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.6;
+      this.layers[7].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.7;
+      this.layers[8].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.8;
+      this.layers[9].tilePositionX +=
+        this.scene.registry.get('backgroundVelocityX') * 0.9;
+      this.layers[10].tilePositionX += this.scene.registry.get(
+        'backgroundVelocityX'
+      );
+    }
   }
 }
