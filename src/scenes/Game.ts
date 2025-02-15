@@ -75,14 +75,6 @@ export class Game extends Scene {
     this.sound.play('loop');
     this.add.image(this.scale.width / 2, 100, 'logo').setDepth(100);
 
-    this.cameras.main.setBounds(
-      0,
-      0,
-      this.scale.width,
-      this.scale.height,
-      true
-    );
-
     this.background = new Background(this);
     this.player = new Player(this, this.scale.width / 2, 450);
     this.foreground = new Foreground(this);

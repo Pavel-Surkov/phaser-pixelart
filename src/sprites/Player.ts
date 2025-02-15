@@ -52,6 +52,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.scene.cameras.main.startFollow(this, false, 0.1, 0.1);
+    this.scene.cameras.main.setBounds(
+      0,
+      0,
+      this.scene.scale.width,
+      this.scene.scale.height,
+      true
+    );
+    this.scene.cameras.main.setDeadzone(0, 0);
 
     this.cursor = this.scene.input.keyboard!.createCursorKeys();
   }

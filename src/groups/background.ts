@@ -11,7 +11,7 @@ export class Background extends Phaser.GameObjects.Group {
       this.scene.scale.width / 2,
       this.scene.scale.height / 2 - 200,
       this.scene.scale.width,
-      this.scene.scale.height + 60,
+      this.scene.scale.height + 70,
     ];
 
     this.layers = [
