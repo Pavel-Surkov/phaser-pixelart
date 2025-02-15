@@ -1,3 +1,4 @@
+import { GameData } from '@constants/game';
 import { Game as MainGame } from '@scenes/Game';
 import { AUTO, Game, Scale, Types } from 'phaser';
 
@@ -10,15 +11,15 @@ enum SceneKeys {
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
-  width: 1024,
-  height: 768,
+  width: GameData.width,
+  height: GameData.height,
   parent: 'game-container',
   backgroundColor: '#028af8',
   physics: {
     default: 'arcade',
     arcade: {
       gravity: {
-        y: 300,
+        y: 500,
         x: 0,
       },
       debug: true,

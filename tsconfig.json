@@ -20,6 +20,7 @@
 
     "baseUrl": "src",
     "paths": {
+      "@constants/*": ["./constants/*"],
       "@scenes/*": ["./scenes/*"],
       "@sprites/*": ["./sprites/*"]
     }
