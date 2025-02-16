@@ -1,14 +1,10 @@
+import { SceneKeys } from '@constants/game';
 import { Game as MainGame } from '@scenes/Game';
 import { Tutorial } from '@scenes/Tutorial';
 import { AUTO, Game, Scale, Types } from 'phaser';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
-
-export enum SceneKeys {
-  GAME = 'game',
-  Tutorial = 'tutorial',
-}
 
 const config: Types.Core.GameConfig = {
   type: AUTO,

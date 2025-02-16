@@ -1,5 +1,5 @@
-import { BgLayers } from '@scenes/Game';
-import { PlayerStates } from '@sprites/Player';
+import { BgLayers, RegistryKeys } from '@constants/game';
+import { PlayerStates } from '@constants/player';
 
 export class Foreground extends Phaser.GameObjects.Group {
   private layers: Phaser.GameObjects.TileSprite[];

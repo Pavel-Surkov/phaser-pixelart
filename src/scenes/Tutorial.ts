@@ -1,4 +1,4 @@
-import { SceneKeys } from 'main';
+import { SceneKeys } from '@constants/game';
 
 export class Tutorial extends Phaser.Scene {
   private w: Phaser.GameObjects.Sprite;
@@ -79,11 +79,6 @@ export class Tutorial extends Phaser.Scene {
       frameRate: 1,
       repeat: -1,
     });
-  }
-
-  create() {
-    this.cameras.main.setBackgroundColor('#000');
-    this.createKeyAnimations();
 
     this.add
       .text(
@@ -99,7 +94,9 @@ export class Tutorial extends Phaser.Scene {
         fontSize: 24,
       })
       .setOrigin(0.5, 0.5);
+  }
 
+  creteSceneTransition() {
     this.input.manager.enabled = true;
     this.input.once(
       'pointerdown',
@@ -131,11 +128,11 @@ export class Tutorial extends Phaser.Scene {
     });
   }
 
-  // changeScene() {
-  //   this.scene.stop(SceneKeys.Tutorial);
-  //   this.scene.launch(SceneKeys.GAME);
-  //   this.cameras.main.fadeIn(1000, 0, 0, 0);
-  // }
+  create() {
+    this.cameras.main.setBackgroundColor('#000');
+    this.createKeyAnimations();
+    this.creteSceneTransition();
+  }
 
   update() {
     this.w.anims.play('w_key', true);
