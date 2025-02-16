@@ -116,7 +116,7 @@ export class Game extends Scene {
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
-      attack: Phaser.Input.Keyboard.KeyCodes.SPACE,
+      attack: Phaser.Input.Keyboard.KeyCodes.J,
     }) as CustomCursorKeys;
   }
 
