@@ -154,6 +154,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       );
     }
 
+    this.calcMovement();
+  }
+
+  calcMovement() {
     if (
       this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
       PlayerStates.IMMOVABLE
@@ -161,10 +165,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.calcMovement();
-  }
-
-  calcMovement() {
     if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
