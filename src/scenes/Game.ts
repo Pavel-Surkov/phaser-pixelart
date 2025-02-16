@@ -1,10 +1,8 @@
-import { Scene } from 'phaser';
 import { Player, PlayerSprites } from '@sprites/Player';
 import { Background } from '@groups/background';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
-
-// TODO: Add HUD with a witch gif
+import { SceneKeys } from 'main';
 
 export enum BgLayers {
   ZERO = 'background_0',
@@ -29,7 +27,7 @@ export type CustomCursorKeys = {
   attack: Phaser.Input.Keyboard.Key;
 };
 
-export class Game extends Scene {
+export class Game extends Phaser.Scene {
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
   }
@@ -65,7 +63,6 @@ export class Game extends Scene {
 
   preload() {
     const { load } = this;
-
     load.setPath('assets');
 
     this.loadBackgroundAssets();
@@ -94,6 +91,17 @@ export class Game extends Scene {
   }
 
   create() {
+    this.cameras.main.fadeIn(
+      1000,
+      0,
+      0,
+      0,
+      () => {
+        this.scene.remove(SceneKeys.Tutorial);
+      },
+      this
+    );
+
     this.sound.add('loop', { loop: true }).play();
 
     this.registry.set('backgroundVelocityX', 2);

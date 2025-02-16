@@ -1,11 +1,13 @@
 import { Game as MainGame } from '@scenes/Game';
+import { Tutorial } from '@scenes/Tutorial';
 import { AUTO, Game, Scale, Types } from 'phaser';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 
-enum SceneKeys {
+export enum SceneKeys {
   GAME = 'game',
+  Tutorial = 'tutorial',
 }
 
 const config: Types.Core.GameConfig = {
@@ -30,7 +32,12 @@ const config: Types.Core.GameConfig = {
     autoCenter: Scale.CENTER_BOTH,
   },
   pixelArt: true,
-  scene: [new MainGame({ key: SceneKeys.GAME })],
+  scene: [
+    new Tutorial({ key: SceneKeys.Tutorial }),
+    new MainGame({ key: SceneKeys.GAME }),
+  ],
 };
 
-export default new Game(config);
+const game = new Game(config);
+
+export default game;

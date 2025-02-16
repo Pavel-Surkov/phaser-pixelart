@@ -1,4 +1,5 @@
 import { CustomCursorKeys } from '@scenes/Game';
+import Phaser from 'phaser';
 
 export enum PlayerStates {
   ALIVE = 'ALIVE',
