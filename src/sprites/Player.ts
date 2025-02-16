@@ -11,6 +11,7 @@ export enum PlayerSprites {
   RUN = 'player_run',
   DEATH = 'player_death',
   CHARGE = 'player_charge',
+  ATTACK = 'player_attack',
   ICON = 'player_icon',
 }
 
@@ -18,6 +19,7 @@ export enum PlayerAnims {
   IDLE = 'idle',
   RUN = 'run',
   CHARGE = 'charge',
+  ATTACK = 'attack',
 }
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
@@ -67,7 +69,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       key: PlayerAnims.CHARGE,
       frames: this.anims.generateFrameNames(PlayerSprites.CHARGE),
       frameRate: 10,
-      repeat: -1,
+    });
+
+    this.anims.create({
+      key: PlayerAnims.ATTACK,
+      frames: this.anims.generateFrameNames(PlayerSprites.ATTACK),
+      frameRate: 12,
     });
 
     this.scene.anims.create({
@@ -84,14 +91,34 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       .play('hero_icon');
 
     this.on('animationstart', this.onAnimationStart, this);
+    this.on('animationcomplete', this.onAnimationComplete, this);
   }
 
   onAnimationStart(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.body?.setOffset(this.body.halfWidth, 10);
       this.scene.registry.set('playerState', PlayerStates.IMMOVABLE);
+    } else if (animation.key === PlayerAnims.ATTACK) {
+      // Change ofset & origin for the Witch to stay at one place
+      if (this.flipX) {
+        this.body?.setOffset(this.width - this.body.width + 4, 10);
+        this.setOrigin(0.81, 0.5);
+      } else {
+        this.body?.setOffset(12, 10);
+        this.setOrigin(0.19, 0.5);
+      }
     } else {
       this.body?.setOffset(8, 10);
+      this.scene.registry.set('playerState', PlayerStates.ALIVE);
+    }
+  }
+
+  onAnimationComplete(animation: Phaser.Animations.Animation) {
+    if (animation.key === PlayerAnims.CHARGE) {
+      this.anims.play(PlayerAnims.ATTACK);
+    }
+    if (animation.key === PlayerAnims.ATTACK) {
+      this.setOrigin(0.5, 0.5);
       this.scene.registry.set('playerState', PlayerStates.ALIVE);
     }
   }
@@ -113,9 +140,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if (cursor.attack.isDown && this.body?.touching.down) {
+    if (
+      cursor.attack.isDown &&
+      this.body?.touching.down &&
+      this.scene.registry.get('playerState') === PlayerStates.ALIVE
+    ) {
       this.anims.play(PlayerAnims.CHARGE, true);
-    } else if (cursor.left.isDown) {
+      this.scene.registry.set('playerState', PlayerStates.IMMOVABLE);
+    }
+
+    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+      return;
+    }
+
+    if (cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
     } else if (cursor.right.isDown) {

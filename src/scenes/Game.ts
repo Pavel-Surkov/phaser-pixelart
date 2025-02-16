@@ -87,6 +87,10 @@ export class Game extends Scene {
       frameWidth: 48,
       frameHeight: 48,
     });
+    load.spritesheet(PlayerSprites.ATTACK, '/witch/B_witch_attack.png', {
+      frameWidth: 104,
+      frameHeight: 46,
+    });
   }
 
   create() {
