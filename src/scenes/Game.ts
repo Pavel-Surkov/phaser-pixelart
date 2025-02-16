@@ -69,7 +69,6 @@ export class Game extends Scene {
 
     this.loadBackgroundAssets();
     load.audio('loop', '/audio/loop.ogg');
-    load.image('logo', 'logo.png');
 
     load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
       frameWidth: 50,
@@ -86,8 +85,8 @@ export class Game extends Scene {
   }
 
   create() {
-    this.sound.play('loop');
-    this.add.image(this.scale.width / 2, 100, 'logo').setDepth(100);
+    this.sound.add('loop', { loop: true }).play();
+    // this.add.image(this.scale.width / 2, 100, 'logo').setDepth(100);
 
     this.background = new Background(this);
     this.player = new Player(this, this.scale.width / 2, 450);
