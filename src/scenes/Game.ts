@@ -26,6 +26,7 @@ export type CustomCursorKeys = {
   down: Phaser.Input.Keyboard.Key;
   left: Phaser.Input.Keyboard.Key;
   right: Phaser.Input.Keyboard.Key;
+  attack: Phaser.Input.Keyboard.Key;
 };
 
 export class Game extends Scene {
@@ -82,11 +83,16 @@ export class Game extends Scene {
       frameWidth: 32,
       frameHeight: 48,
     });
+    load.spritesheet(PlayerSprites.CHARGE, '/witch/B_witch_charge.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+    });
   }
 
   create() {
     this.sound.add('loop', { loop: true }).play();
-    // this.add.image(this.scale.width / 2, 100, 'logo').setDepth(100);
+
+    this.registry.set('backgroundVelocityX', 2);
 
     this.background = new Background(this);
     this.player = new Player(this, this.scale.width / 2, 450);
@@ -99,14 +105,14 @@ export class Game extends Scene {
       ...this.foreground.getChildren(),
     ]);
 
-    const invisibleFloor = new InvisibleFloor(this);
-    this.physics.add.collider(this.player, invisibleFloor);
+    this.physics.add.collider(this.player, new InvisibleFloor(this));
 
     this.cursor = this.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
+      attack: Phaser.Input.Keyboard.KeyCodes.SPACE,
     }) as CustomCursorKeys;
   }
 

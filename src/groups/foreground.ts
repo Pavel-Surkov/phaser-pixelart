@@ -1,4 +1,5 @@
 import { BgLayers, CustomCursorKeys } from '@scenes/Game';
+import { PlayerStates } from '@sprites/Player';
 
 export class Foreground extends Phaser.GameObjects.Group {
   private layers: Phaser.GameObjects.TileSprite[];
@@ -21,6 +22,10 @@ export class Foreground extends Phaser.GameObjects.Group {
   }
 
   update(cursor: CustomCursorKeys) {
+    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+      return;
+    }
+
     if (cursor.left.isDown) {
       this.layers[0].tilePositionX -=
         this.scene.registry.get('backgroundVelocityX') * 1.15;

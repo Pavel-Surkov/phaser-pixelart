@@ -1,4 +1,5 @@
 import { BgLayers, CustomCursorKeys } from '@scenes/Game';
+import { PlayerStates } from '@sprites/Player';
 
 export class Background extends Phaser.GameObjects.Group {
   private layers: Phaser.GameObjects.TileSprite[];
@@ -36,6 +37,10 @@ export class Background extends Phaser.GameObjects.Group {
     // Light is slowly moving by default
     this.layers[4].tilePositionX += 0.03;
     this.layers[7].tilePositionX += 0.05;
+
+    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+      return;
+    }
 
     if (cursor.left.isDown) {
       this.layers[3].tilePositionX -=
