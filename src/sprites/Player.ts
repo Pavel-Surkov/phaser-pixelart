@@ -1,4 +1,3 @@
-import { CustomCursorKeys } from '@scenes/Game';
 import Phaser from 'phaser';
 
 export enum PlayerStates {
@@ -23,8 +22,20 @@ export enum PlayerAnims {
   ATTACK = 'attack',
 }
 
+export type CustomCursorKeys = {
+  up: Phaser.Input.Keyboard.Key;
+  down: Phaser.Input.Keyboard.Key;
+  left: Phaser.Input.Keyboard.Key;
+  right: Phaser.Input.Keyboard.Key;
+  attack: Phaser.Input.Keyboard.Key;
+};
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  // Speed is not exactly a usual speed
+  // Here speed means worldCoordinateX change amount per frame
+  private speed = 2;
   private maxVelocityY = 320;
+  private cursor: CustomCursorKeys;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player');
@@ -34,7 +45,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
     this.setScale(2);
-    this.scene.registry.set('playerState', PlayerStates.ALIVE);
+    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
 
     this.setBodySize(16, 32);
 
@@ -49,6 +60,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene.scale.height,
       true
     );
+
+    this.cursor = this.scene.input.keyboard!.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+      attack: Phaser.Input.Keyboard.KeyCodes.J,
+    }) as CustomCursorKeys;
   }
 
   createAnimations() {
@@ -98,7 +117,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   onAnimationStart(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.body?.setOffset(this.body.halfWidth, 10);
-      this.scene.registry.set('playerState', PlayerStates.IMMOVABLE);
+      this.scene.registry.set(
+        RegistryKeys.PLAYER_STATE,
+        PlayerStates.IMMOVABLE
+      );
     } else if (animation.key === PlayerAnims.ATTACK) {
       // Change ofset & origin for the Witch to stay at one place
       if (this.flipX) {
@@ -110,7 +132,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       }
     } else {
       this.body?.setOffset(8, 10);
-      this.scene.registry.set('playerState', PlayerStates.ALIVE);
+      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
     }
   }
 
@@ -120,12 +142,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     if (animation.key === PlayerAnims.ATTACK) {
       this.setOrigin(0.5, 0.5);
-      this.scene.registry.set('playerState', PlayerStates.ALIVE);
+      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
     }
   }
 
   die() {
-    this.scene.registry.set('playerState', PlayerStates.DEAD);
+    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.DEAD);
 
     this.anims.play(PlayerAnims.IDLE);
     this.anims.stop();
@@ -136,35 +158,49 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
   }
 
-  update(cursor: CustomCursorKeys) {
-    if (this.scene.registry.get('playerState') === PlayerStates.DEAD) {
+  update() {
+    if (
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.DEAD
+    ) {
       return;
     }
 
     if (
-      cursor.attack.isDown &&
+      this.cursor.attack.isDown &&
       this.body?.touching.down &&
-      this.scene.registry.get('playerState') === PlayerStates.ALIVE
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.ALIVE
     ) {
       this.anims.play(PlayerAnims.CHARGE, true);
-      this.scene.registry.set('playerState', PlayerStates.IMMOVABLE);
+      this.scene.registry.set(
+        RegistryKeys.PLAYER_STATE,
+        PlayerStates.IMMOVABLE
+      );
     }
 
-    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+    if (
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
+      PlayerStates.IMMOVABLE
+    ) {
       return;
     }
 
-    if (cursor.left.isDown) {
+    this.calcMovement();
+  }
+
+  calcMovement() {
+    if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
-    } else if (cursor.right.isDown) {
+      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, this.speed);
+    } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
+      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, -this.speed);
     } else {
       this.anims.play(PlayerAnims.IDLE, true);
     }
 
-    if (cursor.up.isDown && this.body?.touching.down) {
+    if (this.cursor.up.isDown && this.body?.touching.down) {
       this.setVelocityY(-this.maxVelocityY);
     }
   }

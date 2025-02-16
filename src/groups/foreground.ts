@@ -1,4 +1,4 @@
-import { BgLayers, CustomCursorKeys } from '@scenes/Game';
+import { BgLayers } from '@scenes/Game';
 import { PlayerStates } from '@sprites/Player';
 
 export class Foreground extends Phaser.GameObjects.Group {
@@ -21,17 +21,14 @@ export class Foreground extends Phaser.GameObjects.Group {
     this.scaleXY(0.5, 0.5);
   }
 
-  update(cursor: CustomCursorKeys) {
-    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+  update() {
+    if (
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
+      PlayerStates.IMMOVABLE
+    ) {
       return;
     }
 
-    if (cursor.left.isDown) {
-      this.layers[0].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 1.15;
-    } else if (cursor.right.isDown) {
-      this.layers[0].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 1.15;
-    }
+    this.layers[0].tilePositionX = this.scene.registry.get('worldCoordinateX');
   }
 }

@@ -19,20 +19,10 @@ export enum BgLayers {
   LIGHT_TWO = 'background_lights_2',
 }
 
-export type CustomCursorKeys = {
-  up: Phaser.Input.Keyboard.Key;
-  down: Phaser.Input.Keyboard.Key;
-  left: Phaser.Input.Keyboard.Key;
-  right: Phaser.Input.Keyboard.Key;
-  attack: Phaser.Input.Keyboard.Key;
-};
-
 export class Game extends Phaser.Scene {
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
   }
-
-  private cursor: CustomCursorKeys;
 
   private background: Background;
   private foreground: Foreground;
@@ -104,7 +94,7 @@ export class Game extends Phaser.Scene {
 
     this.sound.add('loop', { loop: true }).play();
 
-    this.registry.set('backgroundVelocityX', 2);
+    this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
     this.background = new Background(this);
     this.player = new Player(this, this.scale.width / 2, 450);
@@ -118,21 +108,13 @@ export class Game extends Phaser.Scene {
     ]);
 
     this.physics.add.collider(this.player, new InvisibleFloor(this));
-
-    this.cursor = this.input.keyboard!.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D,
-      attack: Phaser.Input.Keyboard.KeyCodes.J,
-    }) as CustomCursorKeys;
   }
 
   update() {
     if (this.gameOver) return;
 
-    this.background.update(this.cursor);
-    this.player.update(this.cursor);
-    this.foreground.update(this.cursor);
+    this.background.update();
+    this.player.update();
+    this.foreground.update();
   }
 }

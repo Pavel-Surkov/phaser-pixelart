@@ -1,4 +1,4 @@
-import { BgLayers, CustomCursorKeys } from '@scenes/Game';
+import { BgLayers } from '@scenes/Game';
 import { PlayerStates } from '@sprites/Player';
 
 export class Background extends Phaser.GameObjects.Group {
@@ -31,53 +31,37 @@ export class Background extends Phaser.GameObjects.Group {
 
     this.addMultiple(this.layers);
     this.scaleXY(0.6, 0.6);
+
+    this.scene.data.set('firstBgLightDeltaX', 0);
+    this.scene.data.set('secondBgLightDeltaX', 0);
   }
 
-  update(cursor: CustomCursorKeys) {
-    // Light is slowly moving by default
-    this.layers[4].tilePositionX += 0.03;
-    this.layers[7].tilePositionX += 0.05;
+  update() {
+    this.scene.data.inc('firstBgLightDeltaX', 0.03);
+    this.scene.data.inc('secondBgLightDeltaX', 0.05);
 
-    if (this.scene.registry.get('playerState') === PlayerStates.IMMOVABLE) {
+    if (
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
+      PlayerStates.IMMOVABLE
+    ) {
       return;
     }
 
-    if (cursor.left.isDown) {
-      this.layers[3].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.1;
-      this.layers[4].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.2;
-      this.layers[5].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.4;
-      this.layers[6].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.6;
-      this.layers[7].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.7;
-      this.layers[8].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.8;
-      this.layers[9].tilePositionX -=
-        this.scene.registry.get('backgroundVelocityX') * 0.9;
-      this.layers[10].tilePositionX -= this.scene.registry.get(
-        'backgroundVelocityX'
-      );
-    } else if (cursor.right.isDown) {
-      this.layers[3].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.1;
-      this.layers[4].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.2;
-      this.layers[5].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.4;
-      this.layers[6].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.6;
-      this.layers[7].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.7;
-      this.layers[8].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.8;
-      this.layers[9].tilePositionX +=
-        this.scene.registry.get('backgroundVelocityX') * 0.9;
-      this.layers[10].tilePositionX += this.scene.registry.get(
-        'backgroundVelocityX'
-      );
-    }
+    const currentWorldCoordX = this.scene.registry.get(
+      RegistryKeys.WORLD_COORD_X
+    );
+
+    // Light layers have delta because these tiles are moving even if world coord doesn't change
+    this.layers[4].tilePositionX =
+      currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
+    this.layers[7].tilePositionX =
+      currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
+
+    this.layers[3].tilePositionX = currentWorldCoordX * 0.1;
+    this.layers[5].tilePositionX = currentWorldCoordX * 0.4;
+    this.layers[6].tilePositionX = currentWorldCoordX * 0.6;
+    this.layers[8].tilePositionX = currentWorldCoordX * 0.8;
+    this.layers[9].tilePositionX = currentWorldCoordX * 0.9;
+    this.layers[10].tilePositionX = currentWorldCoordX;
   }
 }
