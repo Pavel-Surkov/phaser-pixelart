@@ -168,11 +168,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
-      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, this.speed);
+      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, -this.speed);
     } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
-      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, -this.speed);
+      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, this.speed);
     } else {
       this.anims.play(PlayerAnims.IDLE, true);
     }
