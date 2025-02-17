@@ -7,6 +7,11 @@ import {
 } from '@constants/player';
 import Phaser from 'phaser';
 
+// TODO: Add mobs and counter above the player to count monsters killed
+// In future:
+// 1. Add input for user to type a name and save it in localStorage
+// 2. Add backend with leaderboard and show to user after each try
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
   // Speed is not exactly a usual speed
   // Here speed means worldCoordinateX change amount per frame
@@ -15,7 +20,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private cursor: CustomCursorKeys;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'player');
+    super(scene, x, y, PlayerSprites.IDLE);
 
     scene.add.existing(this);
     scene.physics.world.enable(this);

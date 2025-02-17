@@ -23,7 +23,8 @@
       "@constants/*": ["./constants/*"],
       "@scenes/*": ["./scenes/*"],
       "@sprites/*": ["./sprites/*"],
-      "@groups/*": ["./groups/*"]
+      "@groups/*": ["./groups/*"],
+      "@functions/*": ["./functions/*"]
     }
   },
   "include": ["src"]

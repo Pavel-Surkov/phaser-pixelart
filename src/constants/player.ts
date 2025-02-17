@@ -5,19 +5,19 @@ export enum PlayerStates {
 }
 
 export enum PlayerSprites {
-  IDLE = 'player_idle',
-  RUN = 'player_run',
-  DEATH = 'player_death',
-  CHARGE = 'player_charge',
-  ATTACK = 'player_attack',
-  ICON = 'player_icon',
+  IDLE = 'player_sprite_idle',
+  RUN = 'player_sprite_run',
+  DEATH = 'player_sprite_death',
+  CHARGE = 'player_sprite_charge',
+  ATTACK = 'player_sprite_attack',
+  ICON = 'player_sprite_icon',
 }
 
 export enum PlayerAnims {
-  IDLE = 'idle',
-  RUN = 'run',
-  CHARGE = 'charge',
-  ATTACK = 'attack',
+  IDLE = 'player_idle',
+  RUN = 'player_run',
+  CHARGE = 'player_charge',
+  ATTACK = 'player_attack',
 }
 
 export type CustomCursorKeys = {

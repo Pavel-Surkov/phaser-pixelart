@@ -2,35 +2,21 @@ import { Player } from '@sprites/Player';
 import { Background } from '@groups/background';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
-import { PlayerSprites } from '@constants/player';
-import { BgLayers, RegistryKeys, SceneKeys } from '@constants/game';
+import { RegistryKeys, SceneKeys } from '@constants/game';
+import { loadAssets } from '@functions/loadAssets';
+import { Goblin } from '@sprites/Goblin';
 
 export class Game extends Phaser.Scene {
-  constructor(config: Phaser.Types.Scenes.SettingsConfig) {
-    super(config);
-  }
-
   private background: Background;
   private foreground: Foreground;
 
   public player: Player;
+  // Replace with enemies group
+  public goblin: Goblin;
   public gameOver = false;
 
-  loadBackgroundAssets() {
-    const { load } = this;
-
-    load.image(BgLayers.ZERO, '/background/Layer_0011_0.png');
-    load.image(BgLayers.ONE, '/background/Layer_0010_1.png');
-    load.image(BgLayers.TWO, '/background/Layer_0009_2.png');
-    load.image(BgLayers.THREE, '/background/Layer_0008_3.png');
-    load.image(BgLayers.LIGHT_ONE, '/background/Layer_0007_Lights.png');
-    load.image(BgLayers.FOUR, '/background/Layer_0006_4.png');
-    load.image(BgLayers.FIVE, '/background/Layer_0005_5.png');
-    load.image(BgLayers.LIGHT_TWO, '/background/Layer_0004_Lights.png');
-    load.image(BgLayers.SIX, '/background/Layer_0003_6.png');
-    load.image(BgLayers.SEVEN, '/background/Layer_0002_7.png');
-    load.image(BgLayers.EIGHT, '/background/Layer_0001_8.png');
-    load.image(BgLayers.NINE, '/background/Layer_0000_9.png');
+  constructor(config: Phaser.Types.Scenes.SettingsConfig) {
+    super(config);
   }
 
   init() {
@@ -38,32 +24,7 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
-    const { load } = this;
-    load.setPath('assets');
-
-    this.loadBackgroundAssets();
-    load.audio('loop', '/audio/loop.ogg');
-
-    load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
-      frameWidth: 50,
-      frameHeight: 50,
-    });
-    load.spritesheet(PlayerSprites.IDLE, '/witch/B_witch_idle.png', {
-      frameWidth: 32,
-      frameHeight: 48,
-    });
-    load.spritesheet(PlayerSprites.RUN, '/witch/B_witch_run.png', {
-      frameWidth: 32,
-      frameHeight: 48,
-    });
-    load.spritesheet(PlayerSprites.CHARGE, '/witch/B_witch_charge.png', {
-      frameWidth: 48,
-      frameHeight: 48,
-    });
-    load.spritesheet(PlayerSprites.ATTACK, '/witch/B_witch_attack.png', {
-      frameWidth: 104,
-      frameHeight: 46,
-    });
+    loadAssets(this);
   }
 
   create() {
@@ -83,17 +44,24 @@ export class Game extends Phaser.Scene {
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
     this.background = new Background(this);
-    this.player = new Player(this, this.scale.width / 2, 450);
     this.foreground = new Foreground(this);
+    this.player = new Player(this, this.scale.width / 2, 450);
+
+    this.goblin = new Goblin(this, 100, 450);
+
+    // TODO: Remove
+    const floor = new InvisibleFloor(this);
 
     const layer = this.add.layer();
     layer.add([
       ...this.background.getChildren(),
+      this.goblin,
       this.player,
       ...this.foreground.getChildren(),
     ]);
 
-    this.physics.add.collider(this.player, new InvisibleFloor(this));
+    this.physics.add.collider(this.goblin, floor);
+    this.physics.add.collider(this.player, floor);
   }
 
   update() {
@@ -102,5 +70,6 @@ export class Game extends Phaser.Scene {
     this.background.update();
     this.player.update();
     this.foreground.update();
+    this.goblin.update();
   }
 }

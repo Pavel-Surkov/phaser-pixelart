@@ -1,5 +1,7 @@
 import { SceneKeys } from '@constants/game';
 
+const KEYBOARD_SPRITE_KEY = 'keyboard_keys';
+
 export class Tutorial extends Phaser.Scene {
   private w: Phaser.GameObjects.Sprite;
   private a: Phaser.GameObjects.Sprite;
@@ -16,7 +18,7 @@ export class Tutorial extends Phaser.Scene {
     const { load } = this;
     load.setPath('assets');
 
-    load.spritesheet('keys', '/keys/Keyboard_Letters.png', {
+    load.spritesheet(KEYBOARD_SPRITE_KEY, '/keyboard/Keyboard_Letters.png', {
       frameWidth: 16,
       frameHeight: 16,
     });
@@ -24,24 +26,44 @@ export class Tutorial extends Phaser.Scene {
 
   createKeyAnimations() {
     this.w = this.add
-      .sprite(this.scale.width / 2 - 150, this.scale.height / 2 - 40, 'keys')
+      .sprite(
+        this.scale.width / 2 - 150,
+        this.scale.height / 2 - 40,
+        KEYBOARD_SPRITE_KEY
+      )
       .setScale(4);
     this.a = this.add
-      .sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, 'keys')
+      .sprite(
+        this.scale.width / 2 - 150 - 48,
+        this.scale.height / 2,
+        KEYBOARD_SPRITE_KEY
+      )
       .setScale(4);
     this.s = this.add
-      .sprite(this.scale.width / 2 - 150, this.scale.height / 2, 'keys')
+      .sprite(
+        this.scale.width / 2 - 150,
+        this.scale.height / 2,
+        KEYBOARD_SPRITE_KEY
+      )
       .setScale(4);
     this.d = this.add
-      .sprite(this.scale.width / 2 - 150 + 48, this.scale.height / 2, 'keys')
+      .sprite(
+        this.scale.width / 2 - 150 + 48,
+        this.scale.height / 2,
+        KEYBOARD_SPRITE_KEY
+      )
       .setScale(4);
     this.j = this.add
-      .sprite(this.scale.width / 2 + 150, this.scale.height / 2, 'keys')
+      .sprite(
+        this.scale.width / 2 + 150,
+        this.scale.height / 2,
+        KEYBOARD_SPRITE_KEY
+      )
       .setScale(4);
 
     this.w.anims.create({
       key: 'w_key',
-      frames: this.anims.generateFrameNumbers('keys', {
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
         frames: [38, 94],
       }),
       frameRate: 1,
@@ -49,7 +71,7 @@ export class Tutorial extends Phaser.Scene {
     });
     this.a.anims.create({
       key: 'a_key',
-      frames: this.anims.generateFrameNumbers('keys', {
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
         frames: [16, 72],
       }),
       frameRate: 1,
@@ -57,7 +79,7 @@ export class Tutorial extends Phaser.Scene {
     });
     this.s.anims.create({
       key: 's_key',
-      frames: this.anims.generateFrameNumbers('keys', {
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
         frames: [34, 90],
       }),
       frameRate: 1,
@@ -65,7 +87,7 @@ export class Tutorial extends Phaser.Scene {
     });
     this.d.anims.create({
       key: 'd_key',
-      frames: this.anims.generateFrameNumbers('keys', {
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
         frames: [19, 75],
       }),
       frameRate: 1,
@@ -73,7 +95,7 @@ export class Tutorial extends Phaser.Scene {
     });
     this.j.anims.create({
       key: 'j_key',
-      frames: this.anims.generateFrameNumbers('keys', {
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
         frames: [25, 81],
       }),
       frameRate: 1,
