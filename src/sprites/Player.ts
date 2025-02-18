@@ -25,11 +25,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.setCollideWorldBounds(true);
-    this.setScale(2);
-    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+    this.setCollideWorldBounds(true)
+      .setInteractive()
+      .setScale(2)
+      .setBodySize(16, 32)
+      .refreshBody();
 
-    this.setBodySize(16, 32);
+    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
 
     this.createAnimations();
 
@@ -107,10 +109,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       // Change ofset & origin for the Witch to stay at one place
       if (this.flipX) {
         this.body?.setOffset(this.width - this.body.width + 4, 10);
-        this.setOrigin(0.81, 0.5);
+        this.setOrigin(0.81, 0.5).refreshBody();
       } else {
         this.body?.setOffset(12, 10);
-        this.setOrigin(0.19, 0.5);
+        this.setOrigin(0.19, 0.5).refreshBody();
       }
     } else {
       this.body?.setOffset(8, 10);
@@ -174,10 +176,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
       this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, -this.speed);
+      this.scene.events.emit('updateWorldCoordX');
     } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
       this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, this.speed);
+      this.scene.events.emit('updateWorldCoordX');
     } else {
       this.anims.play(PlayerAnims.IDLE, true);
     }

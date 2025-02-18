@@ -2,18 +2,23 @@ import { RegistryKeys } from '@constants/game';
 import { GoblinAnims, GoblinSprites } from '@constants/goblin';
 
 export class Goblin extends Phaser.Physics.Arcade.Sprite {
+  private initialPositionX: number;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GoblinSprites.IDLE);
 
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.setScale(1.6);
-    this.setBodySize(24, 32);
+    this.initialPositionX =
+      x - this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
+
+    this.setScale(1.6).setBodySize(24, 32);
     this.body?.setOffset(
       this.width / 2 - this.body.halfWidth,
       this.height / 2 - this.body.halfHeight + 10
     );
+    this.refreshBody();
 
     this.createAnimations();
 
@@ -44,11 +49,10 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    const currentWorldCoordX = this.scene.registry.get(
-      RegistryKeys.WORLD_COORD_X
+    // Multiply because of background group's scaleXY
+    this.setX(
+      this.initialPositionX -
+        this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6
     );
-
-    // Because of background group's scaleXY
-    this.setX(-currentWorldCoordX * 1.6);
   }
 }

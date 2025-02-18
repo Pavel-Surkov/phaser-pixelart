@@ -7,16 +7,27 @@ import { loadAssets } from '@functions/loadAssets';
 import { Goblin } from '@sprites/Goblin';
 
 export class Game extends Phaser.Scene {
-  private background: Background;
-  private foreground: Foreground;
-
   public player: Player;
+  private enemies: Phaser.Physics.Arcade.Group;
+  private floor: InvisibleFloor;
   // Replace with enemies group
-  public goblin: Goblin;
   public gameOver = false;
 
+  public layer: Phaser.GameObjects.Layer;
+
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
-    super(config);
+    super({
+      ...config,
+      plugins: {
+        global: [
+          {
+            key: 'EventEmitter',
+            plugin: Phaser.Events.EventEmitter,
+            mapping: 'events',
+          },
+        ],
+      },
+    });
   }
 
   init() {
@@ -43,33 +54,41 @@ export class Game extends Phaser.Scene {
 
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
-    this.background = new Background(this);
-    this.foreground = new Foreground(this);
+    const background = new Background(this);
+    const foreground = new Foreground(this);
     this.player = new Player(this, this.scale.width / 2, 450);
+    this.floor = new InvisibleFloor(this);
 
-    this.goblin = new Goblin(this, 100, 450);
+    this.enemies = this.physics.add.group();
 
-    // TODO: Remove
-    const floor = new InvisibleFloor(this);
-
-    const layer = this.add.layer();
-    layer.add([
-      ...this.background.getChildren(),
-      this.goblin,
+    // TODO: Remove this
+    this.layer = this.add.layer();
+    this.layer.add([
+      ...background.getChildren(),
       this.player,
-      ...this.foreground.getChildren(),
+      ...foreground.getChildren(),
     ]);
 
-    this.physics.add.collider(this.goblin, floor);
-    this.physics.add.collider(this.player, floor);
+    this.physics.add.collider(this.player, this.floor);
+
+    this.addGoblin(100, 450);
+  }
+
+  addGoblin(x: number, y: number) {
+    const goblin = new Goblin(this, x, y);
+    goblin.setInteractive().refreshBody();
+    this.physics.add.collider(this.player, goblin);
+
+    // TODO: Do it via collision layers
+    this.physics.add.collider(this.floor, goblin);
+    this.enemies.add(goblin);
+    this.layer.addAt(goblin, this.layer.length - 1);
   }
 
   update() {
     if (this.gameOver) return;
 
-    this.background.update();
     this.player.update();
-    this.foreground.update();
-    this.goblin.update();
+    this.enemies.getChildren().forEach((child) => child.update());
   }
 }

@@ -19,9 +19,11 @@ export class Foreground extends Phaser.GameObjects.Group {
 
     this.addMultiple(this.layers);
     this.scaleXY(0.5, 0.5);
+
+    this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
-  update() {
+  updatePosition() {
     if (
       this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
       PlayerStates.IMMOVABLE
@@ -29,7 +31,10 @@ export class Foreground extends Phaser.GameObjects.Group {
       return;
     }
 
-    this.layers[0].tilePositionX =
-      this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.15;
+    const currentWorldCoordX = this.scene.registry.get(
+      RegistryKeys.WORLD_COORD_X
+    );
+
+    this.layers[0].tilePositionX = currentWorldCoordX * 1.15;
   }
 }

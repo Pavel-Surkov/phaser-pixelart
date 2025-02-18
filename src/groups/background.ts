@@ -34,9 +34,11 @@ export class Background extends Phaser.GameObjects.Group {
 
     this.scene.data.set('firstBgLightDeltaX', 0);
     this.scene.data.set('secondBgLightDeltaX', 0);
+
+    this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
-  update() {
+  updatePosition() {
     this.scene.data.inc('firstBgLightDeltaX', 0.03);
     this.scene.data.inc('secondBgLightDeltaX', 0.05);
 
