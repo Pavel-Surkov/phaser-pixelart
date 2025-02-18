@@ -1,5 +1,5 @@
 import { BgLayers } from '@constants/game';
-import { GoblinSprites } from '@constants/goblin';
+import { GoblinSprites } from '@constants/enemies';
 import { PlayerSprites } from '@constants/player';
 
 export function loadAssets(scene: Phaser.Scene) {

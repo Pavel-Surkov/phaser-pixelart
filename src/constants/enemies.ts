@@ -1,3 +1,7 @@
+export enum EnemyTypes {
+  GOBLIN = 'goblin',
+}
+
 export enum GoblinSprites {
   IDLE = 'goblin_sprite_idle',
   RUN = 'goblin_sprite_run',

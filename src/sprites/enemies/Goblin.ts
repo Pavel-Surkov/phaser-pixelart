@@ -1,5 +1,5 @@
 import { RegistryKeys } from '@constants/game';
-import { GoblinAnims, GoblinSprites } from '@constants/goblin';
+import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 
 export class Goblin extends Phaser.Physics.Arcade.Sprite {
   private initialPositionX: number;
@@ -13,16 +13,20 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
     this.initialPositionX =
       x - this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
 
-    this.setScale(1.6).setBodySize(24, 32);
+    this.configureBody();
+    this.createAnimations();
+
+    this.anims.play(GoblinAnims.IDLE, true);
+  }
+
+  configureBody() {
+    this.setScale(1.6).setBodySize(24, 32).setInteractive();
+    // TODO: Maybe rewrite with this.width with numbers
     this.body?.setOffset(
       this.width / 2 - this.body.halfWidth,
       this.height / 2 - this.body.halfHeight + 10
     );
     this.refreshBody();
-
-    this.createAnimations();
-
-    this.anims.play(GoblinAnims.IDLE, true);
   }
 
   createAnimations() {
@@ -49,7 +53,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    // Multiply because of background group's scaleXY
+    // Multiply by 1.6 because of background group's scaleXY
     this.setX(
       this.initialPositionX -
         this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6

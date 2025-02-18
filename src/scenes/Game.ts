@@ -4,11 +4,12 @@ import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
 import { RegistryKeys, SceneKeys } from '@constants/game';
 import { loadAssets } from '@functions/loadAssets';
-import { Goblin } from '@sprites/Goblin';
+import { Enemies } from '@groups/enemies';
+import { EnemyTypes } from '@constants/enemies';
 
 export class Game extends Phaser.Scene {
   public player: Player;
-  private enemies: Phaser.Physics.Arcade.Group;
+  private enemies: Enemies;
   private floor: InvisibleFloor;
   // Replace with enemies group
   public gameOver = false;
@@ -59,7 +60,11 @@ export class Game extends Phaser.Scene {
     this.player = new Player(this, this.scale.width / 2, 450);
     this.floor = new InvisibleFloor(this);
 
-    this.enemies = this.physics.add.group();
+    this.enemies = new Enemies(this.physics.world, this);
+    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 2, 550, [
+      this.player,
+      this.floor,
+    ]);
 
     // TODO: Remove this
     this.layer = this.add.layer();
@@ -70,19 +75,6 @@ export class Game extends Phaser.Scene {
     ]);
 
     this.physics.add.collider(this.player, this.floor);
-
-    this.addGoblin(100, 450);
-  }
-
-  addGoblin(x: number, y: number) {
-    const goblin = new Goblin(this, x, y);
-    goblin.setInteractive().refreshBody();
-    this.physics.add.collider(this.player, goblin);
-
-    // TODO: Do it via collision layers
-    this.physics.add.collider(this.floor, goblin);
-    this.enemies.add(goblin);
-    this.layer.addAt(goblin, this.layer.length - 1);
   }
 
   update() {
