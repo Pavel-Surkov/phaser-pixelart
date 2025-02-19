@@ -25,14 +25,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.setCollideWorldBounds(true)
-      .setInteractive()
-      .setScale(2)
-      .setBodySize(16, 32)
-      .refreshBody();
-
     this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
 
+    this.configureBody();
     this.createAnimations();
 
     scene.cameras.main.startFollow(this, false, 0.1, 0.1);
@@ -52,6 +47,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       right: Phaser.Input.Keyboard.KeyCodes.D,
       attack: Phaser.Input.Keyboard.KeyCodes.J,
     }) as CustomCursorKeys;
+  }
+
+  configureBody() {
+    this.setCollideWorldBounds(true)
+      .setInteractive()
+      .setScale(2)
+      .setBodySize(16, 32)
+      .refreshBody();
   }
 
   createAnimations() {
@@ -106,7 +109,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         PlayerStates.IMMOVABLE
       );
     } else if (animation.key === PlayerAnims.ATTACK) {
-      // Change ofset & origin for the Witch to stay at one place
+      // Change ofset & origin for Player to stay at one place
       if (this.flipX) {
         this.body?.setOffset(this.width - this.body.width + 4, 10);
         this.setOrigin(0.81, 0.5).refreshBody();

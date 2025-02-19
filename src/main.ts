@@ -29,7 +29,7 @@ const config: Types.Core.GameConfig = {
   },
   pixelArt: true,
   scene: [
-    new Tutorial({ key: SceneKeys.Tutorial }),
+    // new Tutorial({ key: SceneKeys.Tutorial }),
     new MainGame({ key: SceneKeys.GAME }),
   ],
 };

@@ -11,24 +11,12 @@ export class Game extends Phaser.Scene {
   public player: Player;
   private enemies: Enemies;
   private floor: InvisibleFloor;
-  // Replace with enemies group
-  public gameOver = false;
-
   public layer: Phaser.GameObjects.Layer;
 
+  public gameOver = false;
+
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
-    super({
-      ...config,
-      plugins: {
-        global: [
-          {
-            key: 'EventEmitter',
-            plugin: Phaser.Events.EventEmitter,
-            mapping: 'events',
-          },
-        ],
-      },
-    });
+    super(config);
   }
 
   init() {

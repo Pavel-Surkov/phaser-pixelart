@@ -1,6 +1,7 @@
 import { RegistryKeys } from '@constants/game';
 import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 
+// TODO: Add Enemy sprite to set up basic methods, collisions and values for enemies and extend Goblin from it
 export class Goblin extends Phaser.Physics.Arcade.Sprite {
   private initialPositionX: number;
 
@@ -20,8 +21,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   configureBody() {
-    this.setScale(1.6).setBodySize(24, 32).setInteractive();
-    // TODO: Maybe rewrite with this.width with numbers
+    this.setScale(1.6).setBodySize(24, 32);
     this.body?.setOffset(
       this.width / 2 - this.body.halfWidth,
       this.height / 2 - this.body.halfHeight + 10
