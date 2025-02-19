@@ -4,6 +4,8 @@ import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 // TODO: Add Enemy sprite to set up basic methods, collisions and values for enemies and extend Goblin from it
 export class Goblin extends Phaser.Physics.Arcade.Sprite {
   private initialPositionX: number;
+  private lastPositionX: number;
+  public velocityX = 120;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GoblinSprites.IDLE);
@@ -11,7 +13,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.initialPositionX =
+    this.initialPositionX = this.lastPositionX =
       x - scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
 
     this.configureBody();
@@ -21,11 +23,12 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   configureBody() {
-    this.setScale(1.6).setBodySize(24, 32);
+    this.setSize(24, 32).setScale(1.6).setDepth(1);
     this.body?.setOffset(
       this.width / 2 - this.body.halfWidth,
       this.height / 2 - this.body.halfHeight + 10
     );
+
     this.refreshBody();
   }
 
@@ -53,10 +56,11 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    // Multiply by 1.6 because of background group's scaleXY
-    this.setX(
+    const worldMovePositionX =
       this.initialPositionX -
-        this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6
-    );
+      this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
+
+    // Multiply by 1.6 because of background group's scaleXY
+    this.x = worldMovePositionX;
   }
 }

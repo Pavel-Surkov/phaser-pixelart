@@ -23,10 +23,10 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
 
     this.add(enemy);
 
-    // TODO: Configure layers
-    enemy.setDepth(1);
-
-    // TODO: Only top and bottom colliders work + experiment with sprite configuration (setInteractive, refreshBody etc.)
+    // Set velocityX because it resets after adding to group
+    // TODO: Uncomment when resolve the issue with setX that affects velocity
+    // TODO: Remove collisions with Player and move enemies with setX
+    // enemy.setVelocityX(enemy.velocityX);
     collidesWith?.forEach((obj) => this.scene.physics.add.collider(enemy, obj));
   }
 }

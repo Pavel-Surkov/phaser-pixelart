@@ -5,7 +5,8 @@ import { InvisibleFloor } from '@sprites/InvisibleFloor';
 import { RegistryKeys, SceneKeys } from '@constants/game';
 import { loadAssets } from '@functions/loadAssets';
 import { Enemies } from '@groups/enemies';
-import { EnemyTypes } from '@constants/enemies';
+import { EnemyTypes, GoblinSprites } from '@constants/enemies';
+import { Goblin } from '@sprites/enemies/Goblin';
 
 export class Game extends Phaser.Scene {
   public player: Player;
@@ -49,10 +50,17 @@ export class Game extends Phaser.Scene {
     this.floor = new InvisibleFloor(this);
 
     this.enemies = new Enemies(this.physics.world, this);
-    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 2, 550, [
+    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 3, 550, [
       this.player,
       this.floor,
     ]);
+
+    // TODO: Figure out how to resolve coord issue
+    // Maybe just change X position of Background layers instead of changing tilePositionX
+    // const worldContainer = this.add.container(0, 0, [
+    //   ...background.getChildren(),
+    //   ...this.enemies.getChildren(),
+    // ]);
 
     // TODO: Remove this
     this.layer = this.add.layer();
