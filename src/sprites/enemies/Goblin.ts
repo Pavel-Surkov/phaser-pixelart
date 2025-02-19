@@ -12,7 +12,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enable(this);
 
     this.initialPositionX =
-      x - this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
+      x - scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
 
     this.configureBody();
     this.createAnimations();

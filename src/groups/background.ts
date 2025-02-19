@@ -35,19 +35,13 @@ export class Background extends Phaser.GameObjects.Group {
     this.scene.data.set('firstBgLightDeltaX', 0);
     this.scene.data.set('secondBgLightDeltaX', 0);
 
+    this.scene.events.on('update', this.updateLightsPosition, this);
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
-  updatePosition() {
+  updateLightsPosition() {
     this.scene.data.inc('firstBgLightDeltaX', 0.03);
     this.scene.data.inc('secondBgLightDeltaX', 0.05);
-
-    if (
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
-      PlayerStates.IMMOVABLE
-    ) {
-      return;
-    }
 
     const currentWorldCoordX = this.scene.registry.get(
       RegistryKeys.WORLD_COORD_X
@@ -58,6 +52,19 @@ export class Background extends Phaser.GameObjects.Group {
       currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
     this.layers[7].tilePositionX =
       currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
+  }
+
+  updatePosition() {
+    if (
+      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
+      PlayerStates.IMMOVABLE
+    ) {
+      return;
+    }
+
+    const currentWorldCoordX = this.scene.registry.get(
+      RegistryKeys.WORLD_COORD_X
+    );
 
     this.layers[3].tilePositionX = currentWorldCoordX * 0.1;
     this.layers[5].tilePositionX = currentWorldCoordX * 0.4;

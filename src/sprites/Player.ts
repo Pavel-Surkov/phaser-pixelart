@@ -25,7 +25,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+    scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
 
     this.configureBody();
     this.createAnimations();
@@ -40,7 +40,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       true
     );
 
-    this.cursor = this.scene.input.keyboard!.addKeys({
+    this.cursor = scene.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
