@@ -32,47 +32,38 @@ export class Background extends Phaser.GameObjects.Group {
     this.addMultiple(this.spriteLayers);
     this.scaleXY(0.6, 0.6);
 
-    // TODO: Replace registry for all values that can only be used for the Game scene
-    this.scene.data.set('firstBgLightDeltaX', 0.03);
-    this.scene.data.set('secondBgLightDeltaX', 0.05);
+    this.scene.data.set('firstBgLightDeltaX', 0);
+    this.scene.data.set('secondBgLightDeltaX', 0);
 
     this.scene.events.on('update', this.updateLightsPosition, this);
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
   updateLightsPosition() {
+    this.scene.data.inc('firstBgLightDeltaX', 0.03);
+    this.scene.data.inc('secondBgLightDeltaX', 0.05);
+
+    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
+
     // Light layers have delta because these tiles are moving even if world coord doesn't change
-    this.spriteLayers[4].tilePositionX += this.scene.data.get('firstBgLightDeltaX');
-    this.spriteLayers[7].tilePositionX += this.scene.data.get('secondBgLightDeltaX');
+    this.spriteLayers[4].tilePositionX =
+      currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
+    this.spriteLayers[7].tilePositionX =
+      currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
   }
 
-  updatePosition(isDeltaPositive: boolean) {
+  updatePosition() {
     if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
       return;
     }
 
-    if (isDeltaPositive) {
-      this.spriteLayers[2].tilePositionX -= 0.66;
-      this.spriteLayers[3].tilePositionX -= 0.54;
-      this.spriteLayers[5].tilePositionX -= 0.36;
-      this.spriteLayers[6].tilePositionX -= 0.24;
-      this.spriteLayers[8].tilePositionX -= 0.12;
-      this.spriteLayers[9].tilePositionX -= 0.06;
+    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 0.8;
 
-      // Light
-      this.spriteLayers[4].tilePositionX -= 0.42;
-      this.spriteLayers[7].tilePositionX -= 0.12;
-    } else {
-      this.spriteLayers[2].tilePositionX += 0.66;
-      this.spriteLayers[3].tilePositionX += 0.54;
-      this.spriteLayers[5].tilePositionX += 0.36;
-      this.spriteLayers[6].tilePositionX += 0.24;
-      this.spriteLayers[8].tilePositionX += 0.12;
-      this.spriteLayers[9].tilePositionX += 0.06;
-
-      // Light
-      this.spriteLayers[4].tilePositionX += 0.42;
-      this.spriteLayers[7].tilePositionX += 0.12;
-    }
+    this.spriteLayers[3].tilePositionX = currentWorldCoordX * 0.1;
+    this.spriteLayers[5].tilePositionX = currentWorldCoordX * 0.4;
+    this.spriteLayers[6].tilePositionX = currentWorldCoordX * 0.6;
+    this.spriteLayers[8].tilePositionX = currentWorldCoordX * 0.8;
+    this.spriteLayers[9].tilePositionX = currentWorldCoordX * 0.9;
+    this.spriteLayers[10].tilePositionX = currentWorldCoordX;
   }
 }

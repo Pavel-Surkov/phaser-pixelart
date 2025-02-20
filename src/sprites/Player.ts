@@ -13,7 +13,7 @@ import Phaser from 'phaser';
 // 2. Add backend with leaderboard and show to user after each try
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  private velocityX = 300;
+  private velocityX = 180;
   private velocityY = 320;
   private cursor: CustomCursorKeys;
 

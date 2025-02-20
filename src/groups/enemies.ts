@@ -26,7 +26,7 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     // Set velocityX because it resets after adding to group
     // TODO: Uncomment when resolve the issue with setX that affects velocity
     // TODO: Remove collisions with Player and move enemies with setX
-    enemy.setVelocityX(enemy.velocityX);
+    // enemy.setVelocityX(enemy.velocityX);
     collidesWith?.forEach((obj) => this.scene.physics.add.collider(enemy, obj));
   }
 }

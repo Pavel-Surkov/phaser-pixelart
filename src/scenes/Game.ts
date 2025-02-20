@@ -43,8 +43,9 @@ export class Game extends Phaser.Scene {
 
     this.sound.add('loop', { loop: true }).play();
 
-    this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
+    this.data.set(RegistryKeys.WORLD_COORD_X, 0);
 
+    new Background(this);
     new Foreground(this);
     this.player = new Player(this, this.scale.width / 2, 450);
     this.floor = new InvisibleFloor(this);
@@ -55,11 +56,7 @@ export class Game extends Phaser.Scene {
       this.floor,
     ]);
 
-    // TODO: Move background outta worldContainer and leave it as it was
-    this.worldContainer = new WorldContainer(this, [
-      ...new Background(this).getChildren(),
-      ...this.enemies.getChildren(),
-    ]);
+    this.worldContainer = new WorldContainer(this, this.enemies.getChildren());
 
     this.physics.add.collider(this.player, this.floor);
   }
