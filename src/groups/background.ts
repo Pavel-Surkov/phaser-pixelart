@@ -2,7 +2,8 @@ import { BgLayers, RegistryKeys } from '@constants/game';
 import { PlayerStates } from '@constants/player';
 
 export class Background extends Phaser.GameObjects.Group {
-  private layers: Phaser.GameObjects.TileSprite[];
+  private spriteLayers: Phaser.GameObjects.TileSprite[];
+  // private layer: Phaser.GameObjects.Layer;
 
   constructor(scene: Phaser.Scene) {
     super(scene);
@@ -15,7 +16,7 @@ export class Background extends Phaser.GameObjects.Group {
       this.scene.scale.height + 70,
     ];
 
-    this.layers = [
+    this.spriteLayers = [
       this.scene.add.tileSprite(x, y, w, h, BgLayers.ZERO),
       this.scene.add.tileSprite(x, y, w, h, BgLayers.ONE),
       this.scene.add.tileSprite(x, y, w, h, BgLayers.TWO),
@@ -29,7 +30,9 @@ export class Background extends Phaser.GameObjects.Group {
       this.scene.add.tileSprite(x, y, w, h, BgLayers.EIGHT),
     ];
 
-    this.addMultiple(this.layers);
+    // this.layer = this.scene.add.layer(this.spriteLayers);
+
+    this.addMultiple(this.spriteLayers);
     this.scaleXY(0.6, 0.6);
 
     this.scene.data.set('firstBgLightDeltaX', 0);
@@ -48,9 +51,9 @@ export class Background extends Phaser.GameObjects.Group {
     );
 
     // Light layers have delta because these tiles are moving even if world coord doesn't change
-    this.layers[4].tilePositionX =
+    this.spriteLayers[4].tilePositionX =
       currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
-    this.layers[7].tilePositionX =
+    this.spriteLayers[7].tilePositionX =
       currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
   }
 
@@ -66,11 +69,11 @@ export class Background extends Phaser.GameObjects.Group {
       RegistryKeys.WORLD_COORD_X
     );
 
-    this.layers[3].tilePositionX = currentWorldCoordX * 0.1;
-    this.layers[5].tilePositionX = currentWorldCoordX * 0.4;
-    this.layers[6].tilePositionX = currentWorldCoordX * 0.6;
-    this.layers[8].tilePositionX = currentWorldCoordX * 0.8;
-    this.layers[9].tilePositionX = currentWorldCoordX * 0.9;
-    this.layers[10].tilePositionX = currentWorldCoordX;
+    this.spriteLayers[3].tilePositionX = currentWorldCoordX * 0.1;
+    this.spriteLayers[5].tilePositionX = currentWorldCoordX * 0.4;
+    this.spriteLayers[6].tilePositionX = currentWorldCoordX * 0.6;
+    this.spriteLayers[8].tilePositionX = currentWorldCoordX * 0.8;
+    this.spriteLayers[9].tilePositionX = currentWorldCoordX * 0.9;
+    this.spriteLayers[10].tilePositionX = currentWorldCoordX;
   }
 }

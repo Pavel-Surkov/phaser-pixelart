@@ -2,7 +2,7 @@ import { BgLayers, RegistryKeys } from '@constants/game';
 import { PlayerStates } from '@constants/player';
 
 export class Foreground extends Phaser.GameObjects.Group {
-  private layers: Phaser.GameObjects.TileSprite[];
+  private spriteLayers: Phaser.GameObjects.TileSprite[];
 
   constructor(scene: Phaser.Scene) {
     super(scene, [], {});
@@ -15,9 +15,9 @@ export class Foreground extends Phaser.GameObjects.Group {
       this.scene.scale.height + 70,
     ];
 
-    this.layers = [this.scene.add.tileSprite(x, y, w, h, BgLayers.NINE)];
+    this.spriteLayers = [this.scene.add.tileSprite(x, y, w, h, BgLayers.NINE)];
 
-    this.addMultiple(this.layers);
+    this.addMultiple(this.spriteLayers);
     this.scaleXY(0.5, 0.5);
 
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
@@ -35,6 +35,6 @@ export class Foreground extends Phaser.GameObjects.Group {
       RegistryKeys.WORLD_COORD_X
     );
 
-    this.layers[0].tilePositionX = currentWorldCoordX * 1.15;
+    this.spriteLayers[0].tilePositionX = currentWorldCoordX * 1.15;
   }
 }
