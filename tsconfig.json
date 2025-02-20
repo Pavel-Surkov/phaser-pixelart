@@ -24,7 +24,8 @@
       "@scenes/*": ["./scenes/*"],
       "@sprites/*": ["./sprites/*"],
       "@groups/*": ["./groups/*"],
-      "@functions/*": ["./functions/*"]
+      "@functions/*": ["./functions/*"],
+      "@containers/*": ["./containers/*"]
     }
   },
   "include": ["src"]

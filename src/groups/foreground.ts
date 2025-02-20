@@ -28,8 +28,7 @@ export class Foreground extends Phaser.GameObjects.Group {
       return;
     }
 
-    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
-
-    this.spriteLayers[0].tilePositionX = currentWorldCoordX * 1.15;
+    this.spriteLayers[0].tilePositionX =
+      this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 0.78;
   }
 }

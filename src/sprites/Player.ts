@@ -13,8 +13,8 @@ import Phaser from 'phaser';
 // 2. Add backend with leaderboard and show to user after each try
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  private velocityX = 180;
-  private maxVelocityY = 320;
+  private velocityX = 300;
+  private velocityY = 320;
   private cursor: CustomCursorKeys;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -53,6 +53,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       .setScale(2)
       .setBodySize(16, 32)
       .setDepth(1)
+      .setMaxVelocity(0, 1000)
       .refreshBody();
   }
 
@@ -166,25 +167,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
+
       this.scene.registry.inc(
         RegistryKeys.WORLD_COORD_X,
         (-this.velocityX * this.scene.game.loop.delta) / 1000
       );
-      this.scene.events.emit('updateWorldCoordX');
+      this.scene.events.emit('updateWorldCoordX', false);
     } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
+
       this.scene.registry.inc(
         RegistryKeys.WORLD_COORD_X,
         (this.velocityX * this.scene.game.loop.delta) / 1000
       );
-      this.scene.events.emit('updateWorldCoordX');
+      this.scene.events.emit('updateWorldCoordX', true);
     } else {
       this.anims.play(PlayerAnims.IDLE, true);
     }
 
     if (this.cursor.up.isDown && this.body?.touching.down) {
-      this.setVelocityY(-this.maxVelocityY);
+      this.setVelocityY(-this.velocityY);
     }
   }
 }

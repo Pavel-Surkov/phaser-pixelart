@@ -1,9 +1,7 @@
-import { RegistryKeys } from '@constants/game';
 import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 
 // TODO: Add Enemy sprite to set up basic methods, collisions and values for enemies and extend Goblin from it
 export class Goblin extends Phaser.Physics.Arcade.Sprite {
-  private initialPositionX: number;
   public velocityX = 120;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -11,8 +9,6 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.world.enable(this);
-
-    this.initialPositionX = x - scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
 
     this.configureBody();
     this.createAnimations();
@@ -51,13 +47,5 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: -1,
     });
-  }
-
-  update() {
-    const worldMovePositionX =
-      this.initialPositionX - this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.6;
-
-    // Multiply by 1.6 because of background group's scaleXY
-    this.x = worldMovePositionX;
   }
 }

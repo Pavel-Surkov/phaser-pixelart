@@ -1,15 +1,17 @@
 import { Player } from '@sprites/Player';
-import { Background } from '@groups/background';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
 import { RegistryKeys, SceneKeys } from '@constants/game';
 import { loadAssets } from '@functions/loadAssets';
 import { Enemies } from '@groups/enemies';
 import { EnemyTypes } from '@constants/enemies';
+import { WorldContainer } from '@containers/WorldContainer';
+import { Background } from '@groups/background';
 
 export class Game extends Phaser.Scene {
   public player: Player;
   private enemies: Enemies;
+  private worldContainer: WorldContainer;
   private floor: InvisibleFloor;
   public layer: Phaser.GameObjects.Layer;
 
@@ -43,8 +45,7 @@ export class Game extends Phaser.Scene {
 
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
-    const background = new Background(this);
-    const foreground = new Foreground(this);
+    new Foreground(this);
     this.player = new Player(this, this.scale.width / 2, 450);
     this.floor = new InvisibleFloor(this);
 
@@ -54,10 +55,9 @@ export class Game extends Phaser.Scene {
       this.floor,
     ]);
 
-    // TODO: Figure out how to resolve coord issue
-    // Maybe just change X position of Background container with enemies instead of changing Background's tilePositionX
-    const worldContainer = this.add.container(0, 0, [
-      ...background.getChildren(),
+    // TODO: Move background outta worldContainer and leave it as it was
+    this.worldContainer = new WorldContainer(this, [
+      ...new Background(this).getChildren(),
       ...this.enemies.getChildren(),
     ]);
 
@@ -68,6 +68,6 @@ export class Game extends Phaser.Scene {
     if (this.gameOver) return;
 
     this.player.update();
-    this.enemies.getChildren().forEach((child) => child.update());
+    // this.enemies.getChildren().forEach((child) => child.update());
   }
 }
