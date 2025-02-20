@@ -43,7 +43,7 @@ export class Game extends Phaser.Scene {
 
     this.sound.add('loop', { loop: true }).play();
 
-    this.data.set(RegistryKeys.WORLD_COORD_X, 0);
+    this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
     new Background(this);
     new Foreground(this);
