@@ -169,7 +169,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.scene.registry.inc(
         RegistryKeys.WORLD_COORD_X,
-        (-this.velocityX * this.scene.game.loop.delta) / 1000
+        Math.round((-this.velocityX * this.scene.game.loop.delta) / 1000)
       );
       this.scene.events.emit('updateWorldCoordX', false);
     } else if (this.cursor.right.isDown) {
@@ -178,7 +178,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.scene.registry.inc(
         RegistryKeys.WORLD_COORD_X,
-        (this.velocityX * this.scene.game.loop.delta) / 1000
+        Math.round((this.velocityX * this.scene.game.loop.delta) / 1000)
       );
       this.scene.events.emit('updateWorldCoordX', true);
     } else {

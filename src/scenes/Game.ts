@@ -65,6 +65,6 @@ export class Game extends Phaser.Scene {
     if (this.gameOver) return;
 
     this.player.update();
-    // this.enemies.getChildren().forEach((child) => child.update());
+    this.enemies.getChildren().forEach((child) => child.update());
   }
 }
