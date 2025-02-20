@@ -13,9 +13,7 @@ import Phaser from 'phaser';
 // 2. Add backend with leaderboard and show to user after each try
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  // Speed is not exactly a usual speed
-  // Here speed means worldCoordinateX change amount per frame
-  private speed = 2;
+  private velocityX = 180;
   private maxVelocityY = 320;
   private cursor: CustomCursorKeys;
 
@@ -178,12 +176,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
-      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, -this.speed);
+      this.scene.registry.inc(
+        RegistryKeys.WORLD_COORD_X,
+        (-this.velocityX * this.scene.game.loop.delta) / 1000
+      );
       this.scene.events.emit('updateWorldCoordX');
     } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
-      this.scene.registry.inc(RegistryKeys.WORLD_COORD_X, this.speed);
+      this.scene.registry.inc(
+        RegistryKeys.WORLD_COORD_X,
+        (this.velocityX * this.scene.game.loop.delta) / 1000
+      );
       this.scene.events.emit('updateWorldCoordX');
     } else {
       this.anims.play(PlayerAnims.IDLE, true);
