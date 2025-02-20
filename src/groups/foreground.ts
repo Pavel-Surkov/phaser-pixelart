@@ -18,22 +18,17 @@ export class Foreground extends Phaser.GameObjects.Group {
     this.spriteLayers = [this.scene.add.tileSprite(x, y, w, h, BgLayers.NINE)];
 
     this.addMultiple(this.spriteLayers);
-    this.scaleXY(0.5, 0.5);
+    this.scaleXY(0.5, 0.5).setDepth(2);
 
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
   updatePosition() {
-    if (
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
-      PlayerStates.IMMOVABLE
-    ) {
+    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
       return;
     }
 
-    const currentWorldCoordX = this.scene.registry.get(
-      RegistryKeys.WORLD_COORD_X
-    );
+    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
 
     this.spriteLayers[0].tilePositionX = currentWorldCoordX * 1.15;
   }

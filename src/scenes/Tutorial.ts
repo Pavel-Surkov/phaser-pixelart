@@ -26,39 +26,19 @@ export class Tutorial extends Phaser.Scene {
 
   createKeyAnimations() {
     this.w = this.add
-      .sprite(
-        this.scale.width / 2 - 150,
-        this.scale.height / 2 - 40,
-        KEYBOARD_SPRITE_KEY
-      )
+      .sprite(this.scale.width / 2 - 150, this.scale.height / 2 - 40, KEYBOARD_SPRITE_KEY)
       .setScale(4);
     this.a = this.add
-      .sprite(
-        this.scale.width / 2 - 150 - 48,
-        this.scale.height / 2,
-        KEYBOARD_SPRITE_KEY
-      )
+      .sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
       .setScale(4);
     this.s = this.add
-      .sprite(
-        this.scale.width / 2 - 150,
-        this.scale.height / 2,
-        KEYBOARD_SPRITE_KEY
-      )
+      .sprite(this.scale.width / 2 - 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
       .setScale(4);
     this.d = this.add
-      .sprite(
-        this.scale.width / 2 - 150 + 48,
-        this.scale.height / 2,
-        KEYBOARD_SPRITE_KEY
-      )
+      .sprite(this.scale.width / 2 - 150 + 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
       .setScale(4);
     this.j = this.add
-      .sprite(
-        this.scale.width / 2 + 150,
-        this.scale.height / 2,
-        KEYBOARD_SPRITE_KEY
-      )
+      .sprite(this.scale.width / 2 + 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
       .setScale(4);
 
     this.w.anims.create({
@@ -103,12 +83,9 @@ export class Tutorial extends Phaser.Scene {
     });
 
     this.add
-      .text(
-        this.scale.width / 2 - 150,
-        this.scale.height / 2 + 60,
-        'Movement',
-        { fontSize: 24 }
-      )
+      .text(this.scale.width / 2 - 150, this.scale.height / 2 + 60, 'Movement', {
+        fontSize: 24,
+      })
       .setOrigin(0.5, 0.5);
 
     this.add
@@ -130,14 +107,9 @@ export class Tutorial extends Phaser.Scene {
 
     this.time.delayedCall(2000, () => {
       const clickText = this.add
-        .text(
-          this.scale.width / 2,
-          this.scale.height / 2 + 200,
-          'Click to continue',
-          {
-            fontSize: 24,
-          }
-        )
+        .text(this.scale.width / 2, this.scale.height / 2 + 200, 'Click to continue', {
+          fontSize: 24,
+        })
         .setOrigin(0.5, 0.5)
         .setAlpha(0);
 

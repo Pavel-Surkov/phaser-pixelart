@@ -52,6 +52,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       .setInteractive()
       .setScale(2)
       .setBodySize(16, 32)
+      .setDepth(1)
       .refreshBody();
   }
 
@@ -102,10 +103,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   onAnimationStart(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.body?.setOffset(this.body.halfWidth, 10);
-      this.scene.registry.set(
-        RegistryKeys.PLAYER_STATE,
-        PlayerStates.IMMOVABLE
-      );
+      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
     } else if (animation.key === PlayerAnims.ATTACK) {
       // Change ofset & origin for Player to stay at one place
       if (this.flipX) {
@@ -144,9 +142,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    if (
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.DEAD
-    ) {
+    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.DEAD) {
       return;
     }
 
@@ -156,20 +152,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.ALIVE
     ) {
       this.anims.play(PlayerAnims.CHARGE, true);
-      this.scene.registry.set(
-        RegistryKeys.PLAYER_STATE,
-        PlayerStates.IMMOVABLE
-      );
+      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
     }
 
     this.calcMovement();
   }
 
   calcMovement() {
-    if (
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
-      PlayerStates.IMMOVABLE
-    ) {
+    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
       return;
     }
 

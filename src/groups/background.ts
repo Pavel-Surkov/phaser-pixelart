@@ -3,7 +3,6 @@ import { PlayerStates } from '@constants/player';
 
 export class Background extends Phaser.GameObjects.Group {
   private spriteLayers: Phaser.GameObjects.TileSprite[];
-  // private layer: Phaser.GameObjects.Layer;
 
   constructor(scene: Phaser.Scene) {
     super(scene);
@@ -30,8 +29,6 @@ export class Background extends Phaser.GameObjects.Group {
       this.scene.add.tileSprite(x, y, w, h, BgLayers.EIGHT),
     ];
 
-    // this.layer = this.scene.add.layer(this.spriteLayers);
-
     this.addMultiple(this.spriteLayers);
     this.scaleXY(0.6, 0.6);
 
@@ -46,9 +43,7 @@ export class Background extends Phaser.GameObjects.Group {
     this.scene.data.inc('firstBgLightDeltaX', 0.03);
     this.scene.data.inc('secondBgLightDeltaX', 0.05);
 
-    const currentWorldCoordX = this.scene.registry.get(
-      RegistryKeys.WORLD_COORD_X
-    );
+    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
 
     // Light layers have delta because these tiles are moving even if world coord doesn't change
     this.spriteLayers[4].tilePositionX =
@@ -58,16 +53,11 @@ export class Background extends Phaser.GameObjects.Group {
   }
 
   updatePosition() {
-    if (
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) ===
-      PlayerStates.IMMOVABLE
-    ) {
+    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
       return;
     }
 
-    const currentWorldCoordX = this.scene.registry.get(
-      RegistryKeys.WORLD_COORD_X
-    );
+    const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
 
     this.spriteLayers[3].tilePositionX = currentWorldCoordX * 0.1;
     this.spriteLayers[5].tilePositionX = currentWorldCoordX * 0.4;
