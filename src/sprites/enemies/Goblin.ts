@@ -17,7 +17,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
   }
 
   configureBody() {
-    this.setSize(24, 32).setScale(1.6).setDepth(1);
+    this.setSize(24, 36).setScale(1.6);
     this.body?.setOffset(
       this.width / 2 - this.body.halfWidth,
       this.height / 2 - this.body.halfHeight + 10
