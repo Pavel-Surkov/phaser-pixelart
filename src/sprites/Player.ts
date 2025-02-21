@@ -14,13 +14,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private velocityY = 320;
   private cursor: CustomCursorKeys;
 
-  public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+  private hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
 
   constructor(scene: Phaser.Scene, x: number, y: number, enemies: Enemies) {
     super(scene, x, y, PlayerSprites.IDLE);
 
     scene.add.existing(this);
     scene.physics.world.enable(this);
+
+    // this.setState
 
     scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
 
@@ -184,6 +186,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     ) {
       this.anims.play(PlayerAnims.CHARGE, true);
       this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
+      return;
     }
 
     this.calcMovement();

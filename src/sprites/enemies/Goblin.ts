@@ -2,10 +2,10 @@ import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 import { RegistryKeys } from '@constants/game';
 import { Enemy } from './Enemy';
 
-// TODO: Add Enemy sprite to set up basic methods, collisions and values for enemies and extend Goblin from it
 export class Goblin extends Enemy {
   public velocityX = 150;
   public initialPosition: number;
+  private hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GoblinSprites.IDLE);
@@ -17,6 +17,7 @@ export class Goblin extends Enemy {
 
     this.configureBody();
     this.createAnimations();
+    // this.configureHitArea();
 
     this.anims.play(GoblinAnims.IDLE, true);
   }
@@ -51,14 +52,26 @@ export class Goblin extends Enemy {
     });
   }
 
-  update() {
+  public update() {
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
-    // TODO: Add animations and flipX
-
     const direction = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
-
     this.setVelocityX(direction === 'right' ? this.velocityX : direction === 'left' ? -this.velocityX : 0);
+
+    if (direction === 'left') {
+      this.anims.play(GoblinAnims.RUN, true);
+      this.flipX = true;
+    } else if (direction === 'right') {
+      this.anims.play(GoblinAnims.RUN, true);
+      this.flipX = false;
+    }
+
+    if (direction === 'none') {
+      this.anims.play(GoblinAnims.IDLE, true);
+
+      this.anims.play(GoblinAnims.ATTACK);
+      // this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
+    }
   }
 }

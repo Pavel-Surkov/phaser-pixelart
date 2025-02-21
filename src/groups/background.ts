@@ -1,5 +1,4 @@
 import { BgLayers, RegistryKeys } from '@constants/game';
-import { PlayerStates } from '@constants/player';
 
 export class Background extends Phaser.GameObjects.Group {
   private spriteLayers: Phaser.GameObjects.TileSprite[];
@@ -51,10 +50,6 @@ export class Background extends Phaser.GameObjects.Group {
   }
 
   updatePosition() {
-    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
-      return;
-    }
-
     const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 0.8;
 
     this.spriteLayers[3].tilePositionX = currentWorldCoordX * 0.1;
