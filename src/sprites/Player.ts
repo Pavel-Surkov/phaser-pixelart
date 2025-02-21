@@ -1,11 +1,8 @@
 import { RegistryKeys } from '@constants/game';
-import {
-  CustomCursorKeys,
-  PlayerAnims,
-  PlayerSprites,
-  PlayerStates,
-} from '@constants/player';
+import { CustomCursorKeys, PlayerAnims, PlayerSprites, PlayerStates } from '@constants/player';
 import Phaser from 'phaser';
+import { Enemy } from './enemies/Enemy';
+import { Enemies } from '@groups/enemies';
 
 // TODO: Add mobs and counter above the player to count monsters killed
 // In future:
@@ -17,7 +14,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private velocityY = 320;
   private cursor: CustomCursorKeys;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, enemies: Enemies) {
     super(scene, x, y, PlayerSprites.IDLE);
 
     scene.add.existing(this);
@@ -27,16 +26,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.configureBody();
     this.createAnimations();
+    this.configureHitArea();
+
+    this.scene.physics.add.overlap(
+      enemies.getChildren(),
+      this.hitArea,
+      (enemy) => (enemy as Enemy).die(),
+      undefined,
+      this
+    );
 
     scene.cameras.main.startFollow(this, false, 0.1, 0.1);
     scene.cameras.main.setDeadzone(0, 0);
-    scene.cameras.main.setBounds(
-      0,
-      0,
-      this.scene.scale.width,
-      this.scene.scale.height,
-      true
-    );
+    scene.cameras.main.setBounds(0, 0, scene.scale.width, scene.scale.height, true);
 
     this.cursor = scene.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -47,16 +49,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }) as CustomCursorKeys;
   }
 
-  configureBody() {
-    this.setCollideWorldBounds(true)
-      .setInteractive()
-      .setScale(2)
-      .setBodySize(16, 30)
-      .refreshBody()
-      .setDepth(1);
+  private configureBody() {
+    this.setCollideWorldBounds(true).setInteractive().setScale(2).setBodySize(16, 30).refreshBody().setDepth(1);
   }
 
-  createAnimations() {
+  private configureHitArea() {
+    this.hitArea = this.scene.add.rectangle(
+      this.x + 92,
+      this.y,
+      130,
+      60,
+      0xffffff,
+      0.5
+    ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+    this.scene.physics.world.enable(this.hitArea);
+    this.hitArea.body.allowGravity = false;
+    this.hitArea.body.enable = false;
+    this.hitArea.visible = false;
+    this.scene.physics.world.remove(this.hitArea.body);
+  }
+
+  private createAnimations() {
     this.anims.create({
       key: PlayerAnims.RUN,
       frames: this.anims.generateFrameNames(PlayerSprites.RUN),
@@ -90,17 +103,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    this.scene.add
-      .sprite(60, 60, 'hero_icon')
-      .setScale(1.5)
-      .setDepth(2)
-      .play('hero_icon');
+    this.scene.add.sprite(60, 60, 'hero_icon').setScale(1.5).setDepth(2).play('hero_icon');
 
-    this.on('animationstart', this.onAnimationStart, this);
-    this.on('animationcomplete', this.onAnimationComplete, this);
+    this.on(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
   }
 
-  onAnimationStart(animation: Phaser.Animations.Animation) {
+  private startHit(_: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) {
+    if (frame.index < 5) {
+      return;
+    }
+
+    this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
+
+    this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
+    this.hitArea.y = this.y;
+    this.hitArea.body.enable = true;
+    this.scene.physics.world.add(this.hitArea.body);
+  }
+
+  private onAnimationStart(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.body?.setOffset(this.body.halfWidth, 10);
       this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
@@ -113,23 +135,32 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.body?.setOffset(12, 10);
         this.setOrigin(0.19, 0.5).refreshBody();
       }
+
+      this.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
     } else {
       this.body?.setOffset(8, 10);
       this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
     }
   }
 
-  onAnimationComplete(animation: Phaser.Animations.Animation) {
+  private onAnimationComplete(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.anims.play(PlayerAnims.ATTACK);
     }
     if (animation.key === PlayerAnims.ATTACK) {
       this.setOrigin(0.5, 0.5);
       this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+
+      this.hitArea.body.enable = false;
+      this.scene.physics.world.remove(this.hitArea.body);
     }
   }
 
-  die() {
+  public killEnemy(enemy: any) {
+    enemy.die();
+  }
+
+  private die() {
     this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.DEAD);
 
     this.anims.play(PlayerAnims.IDLE);
@@ -141,7 +172,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
   }
 
-  update() {
+  public update() {
     if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.DEAD) {
       return;
     }
@@ -158,7 +189,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.calcMovement();
   }
 
-  calcMovement() {
+  private calcMovement() {
     if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
       return;
     }

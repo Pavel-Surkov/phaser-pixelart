@@ -1,8 +1,9 @@
 import { GoblinAnims, GoblinSprites } from '@constants/enemies';
 import { RegistryKeys } from '@constants/game';
+import { Enemy } from './Enemy';
 
 // TODO: Add Enemy sprite to set up basic methods, collisions and values for enemies and extend Goblin from it
-export class Goblin extends Phaser.Physics.Arcade.Sprite {
+export class Goblin extends Enemy {
   public velocityX = 150;
   public initialPosition: number;
 
@@ -20,17 +21,14 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(GoblinAnims.IDLE, true);
   }
 
-  configureBody() {
+  private configureBody() {
     this.setSize(24, 36).setScale(1.6);
-    this.body?.setOffset(
-      this.width / 2 - this.body.halfWidth,
-      this.height / 2 - this.body.halfHeight + 10
-    );
+    this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight + 10);
 
     this.refreshBody();
   }
 
-  createAnimations() {
+  private createAnimations() {
     this.anims.create({
       key: GoblinAnims.IDLE,
       frames: this.anims.generateFrameNames(GoblinSprites.IDLE),
@@ -57,15 +55,10 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
-    const direction =
-      Math.abs(playerRelativePosX) - 56 <= 0
-        ? 'none'
-        : playerRelativePosX > 0
-          ? 'right'
-          : 'left';
+    // TODO: Add animations and flipX
 
-    this.setVelocityX(
-      direction === 'right' ? this.velocityX : direction === 'left' ? -this.velocityX : 0
-    );
+    const direction = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
+
+    this.setVelocityX(direction === 'right' ? this.velocityX : direction === 'left' ? -this.velocityX : 0);
   }
 }

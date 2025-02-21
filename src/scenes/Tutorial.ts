@@ -25,21 +25,11 @@ export class Tutorial extends Phaser.Scene {
   }
 
   createKeyAnimations() {
-    this.w = this.add
-      .sprite(this.scale.width / 2 - 150, this.scale.height / 2 - 40, KEYBOARD_SPRITE_KEY)
-      .setScale(4);
-    this.a = this.add
-      .sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
-      .setScale(4);
-    this.s = this.add
-      .sprite(this.scale.width / 2 - 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
-      .setScale(4);
-    this.d = this.add
-      .sprite(this.scale.width / 2 - 150 + 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
-      .setScale(4);
-    this.j = this.add
-      .sprite(this.scale.width / 2 + 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY)
-      .setScale(4);
+    this.w = this.add.sprite(this.scale.width / 2 - 150, this.scale.height / 2 - 40, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.a = this.add.sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.s = this.add.sprite(this.scale.width / 2 - 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.d = this.add.sprite(this.scale.width / 2 - 150 + 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.j = this.add.sprite(this.scale.width / 2 + 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
 
     this.w.anims.create({
       key: 'w_key',
