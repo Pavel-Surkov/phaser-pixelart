@@ -156,7 +156,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  public killEnemy(enemy: any) {
+  public killEnemy(enemy: Enemy) {
     enemy.die();
   }
 

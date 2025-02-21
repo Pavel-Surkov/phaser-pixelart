@@ -41,7 +41,7 @@ export class Game extends Phaser.Scene {
     this.floor = new InvisibleFloor(this);
     this.enemies = new Enemies(this.physics.world, this).setDepth(10);
     this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 2.75, 550, [this.floor]);
-    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 10, 550, [this.floor]);
+    // this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 10, 550, [this.floor]);
 
     this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
     this.physics.add.collider(this.player, this.floor);

@@ -46,10 +46,8 @@ export class Background extends Phaser.GameObjects.Group {
     const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
 
     // Light layers have delta because these tiles are moving even if world coord doesn't change
-    this.spriteLayers[4].tilePositionX =
-      currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
-    this.spriteLayers[7].tilePositionX =
-      currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
+    this.spriteLayers[4].tilePositionX = currentWorldCoordX * 0.2 + this.scene.data.get('firstBgLightDeltaX');
+    this.spriteLayers[7].tilePositionX = currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
   }
 
   updatePosition() {

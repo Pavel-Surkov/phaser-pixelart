@@ -6,12 +6,7 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     super(world, scene);
   }
 
-  addEnemy(
-    type: EnemyTypes,
-    x: number,
-    y: number,
-    collidesWith?: Phaser.GameObjects.GameObject[]
-  ) {
+  addEnemy(type: EnemyTypes, x: number, y: number, collidesWith?: Phaser.GameObjects.GameObject[]) {
     let enemy: Goblin;
 
     if (type === EnemyTypes.GOBLIN) {
