@@ -71,7 +71,6 @@ export class Goblin extends Enemy {
       this.anims.play(GoblinAnims.IDLE, true);
 
       this.anims.play(GoblinAnims.ATTACK);
-      // this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
     }
   }
 }

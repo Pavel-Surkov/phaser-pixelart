@@ -22,9 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    // this.setState
-
-    scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+    this.setState(PlayerStates.ALIVE);
 
     this.configureBody();
     this.createAnimations();
@@ -127,7 +125,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private onAnimationStart(animation: Phaser.Animations.Animation) {
     if (animation.key === PlayerAnims.CHARGE) {
       this.body?.setOffset(this.body.halfWidth, 10);
-      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
+      this.setState(PlayerStates.IMMOVABLE);
     } else if (animation.key === PlayerAnims.ATTACK) {
       // Change ofset & origin for Player to stay at one place
       if (this.flipX) {
@@ -141,7 +139,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
     } else {
       this.body?.setOffset(8, 10);
-      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+      this.setState(PlayerStates.ALIVE);
     }
   }
 
@@ -151,7 +149,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     if (animation.key === PlayerAnims.ATTACK) {
       this.setOrigin(0.5, 0.5);
-      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.ALIVE);
+      this.setState(PlayerStates.ALIVE);
 
       this.hitArea.body.enable = false;
       this.scene.physics.world.remove(this.hitArea.body);
@@ -163,29 +161,24 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private die() {
-    this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.DEAD);
+    this.setState(PlayerStates.DEAD);
+    this.setTint(0xff0000);
+    this.setImmovable(true);
 
     this.anims.play(PlayerAnims.IDLE);
     this.anims.stop();
-
-    this.setTint(0xff0000);
-    this.setImmovable(true);
 
     this.scene.physics.world.disable(this);
   }
 
   public update() {
-    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.DEAD) {
+    if (this.state === PlayerStates.DEAD) {
       return;
     }
 
-    if (
-      this.cursor.attack.isDown &&
-      this.body?.touching.down &&
-      this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.ALIVE
-    ) {
+    if (this.cursor.attack.isDown && this.body?.touching.down && this.state === PlayerStates.ALIVE) {
       this.anims.play(PlayerAnims.CHARGE, true);
-      this.scene.registry.set(RegistryKeys.PLAYER_STATE, PlayerStates.IMMOVABLE);
+      this.setState(PlayerStates.IMMOVABLE);
       return;
     }
 
@@ -193,7 +186,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private calcMovement() {
-    if (this.scene.registry.get(RegistryKeys.PLAYER_STATE) === PlayerStates.IMMOVABLE) {
+    if (this.state === PlayerStates.IMMOVABLE) {
       return;
     }
 
