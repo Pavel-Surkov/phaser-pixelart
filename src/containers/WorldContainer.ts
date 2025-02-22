@@ -6,6 +6,7 @@ export class WorldContainer extends Phaser.GameObjects.Container {
 
     this.scene.add.existing(this);
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
+    this.setDepth(1);
   }
 
   updatePosition() {

@@ -50,7 +50,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private configureBody() {
-    this.setCollideWorldBounds(true).setInteractive().setScale(2).setBodySize(16, 30).refreshBody().setDepth(1);
+    this.setCollideWorldBounds(true).setInteractive().setScale(2).setBodySize(16, 32).refreshBody().setDepth(1);
   }
 
   private configureHitArea() {
@@ -164,6 +164,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setState(PlayerStates.DEAD);
     this.setTint(0xff0000);
     this.setImmovable(true);
+
+    this.hitArea.body.enable = false;
+    this.scene.physics.world.remove(this.hitArea.body);
 
     this.anims.play(PlayerAnims.IDLE);
     this.anims.stop();

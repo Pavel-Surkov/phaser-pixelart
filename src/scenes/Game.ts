@@ -46,7 +46,7 @@ export class Game extends Phaser.Scene {
     this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
     this.physics.add.collider(this.player, this.floor);
 
-    this.worldContainer = new WorldContainer(this, this.enemies.getChildren());
+    this.worldContainer = new WorldContainer(this, [...this.enemies.getChildren()]);
   }
 
   update() {

@@ -17,16 +17,36 @@ export class Goblin extends Enemy {
 
     this.configureBody();
     this.createAnimations();
-    // this.configureHitArea();
+    this.configureHitArea();
 
     this.anims.play(GoblinAnims.IDLE, true);
   }
 
   private configureBody() {
-    this.setSize(24, 36).setScale(1.6);
+    this.setSize(24, 32).setScale(1.6);
     this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight + 10);
 
     this.refreshBody();
+  }
+
+  // TODO: Add attack and then set private / public methods for all classes
+  private configureHitArea() {
+    if (!this.body) return;
+
+    this.hitArea = this.scene.add.rectangle(
+      this.body.x + this.body.halfWidth,
+      this.body.y + this.body.halfHeight,
+      this.body.width * 3.7,
+      this.body.height,
+      0xffffff,
+      0.5
+    ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+    this.hitArea.rotation = 0.35;
+    this.scene.physics.world.enable(this.hitArea);
+    this.hitArea.body.allowGravity = false;
+    this.hitArea.body.enable = false;
+    // this.hitArea.visible = false;
+    this.scene.physics.world.remove(this.hitArea.body);
   }
 
   private createAnimations() {
@@ -59,6 +79,15 @@ export class Goblin extends Enemy {
     const direction = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
     this.setVelocityX(direction === 'right' ? this.velocityX : direction === 'left' ? -this.velocityX : 0);
 
+    if (this.body) {
+      this.hitArea.x = this.body.x + this.body.halfWidth;
+      this.hitArea.y = this.body.y + this.body.halfHeight;
+
+      this.hitArea.rotation = this.flipX ? -0.35 : 0.35;
+    }
+
+    // TODO: Add attack animation
+
     if (direction === 'left') {
       this.anims.play(GoblinAnims.RUN, true);
       this.flipX = true;
@@ -69,8 +98,6 @@ export class Goblin extends Enemy {
 
     if (direction === 'none') {
       this.anims.play(GoblinAnims.IDLE, true);
-
-      this.anims.play(GoblinAnims.ATTACK);
     }
   }
 }
