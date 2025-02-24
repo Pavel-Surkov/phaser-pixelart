@@ -5,7 +5,6 @@ import { Enemy } from './Enemy';
 export class Goblin extends Enemy {
   public velocityX = 150;
   public initialPosition: number;
-  private hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GoblinSprites.IDLE);

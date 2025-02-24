@@ -158,17 +158,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     enemy.die();
   }
 
-  private die() {
+  // TODO: Playe die animation
+  die() {
     this.setState(PlayerStates.DEAD);
-    this.setTint(0xff0000);
     this.setImmovable(true);
+    this.setTint(0xff0000);
 
     this.hitArea.destroy();
-
-    this.anims.play(PlayerAnims.IDLE);
     this.anims.stop();
-
     this.scene.physics.world.disable(this);
+    this.scene.physics.pause();
   }
 
   update() {
