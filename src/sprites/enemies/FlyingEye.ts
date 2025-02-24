@@ -2,7 +2,7 @@ import { EnemyAnims, EnemyStates, EyeSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class FlyingEye extends Enemy {
-  public velocityX = 200;
+  public velocityX = 220;
   public attackRange = 40;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -21,8 +21,8 @@ export class FlyingEye extends Enemy {
   }
 
   private configureBody() {
-    this.setSize(24, 32).setScale(1.6);
-    this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight + 6);
+    this.setSize(24, 48).setScale(1.6);
+    this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight + 16);
     this.refreshBody();
   }
 
@@ -33,7 +33,7 @@ export class FlyingEye extends Enemy {
       this.body.x + this.body.halfWidth,
       this.body.y,
       this.body.width * 1.15,
-      this.body.height
+      this.body.height / 2
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     this.hitArea.setOrigin(0, 0);
     this.addPhysicsAndHideHitArea();
