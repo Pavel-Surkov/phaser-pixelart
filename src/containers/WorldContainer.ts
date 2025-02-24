@@ -9,7 +9,7 @@ export class WorldContainer extends Phaser.GameObjects.Container {
     this.setDepth(1);
   }
 
-  updatePosition() {
+  private updatePosition() {
     this.x = -this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.3;
   }
 }

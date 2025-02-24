@@ -38,7 +38,7 @@ export class Background extends Phaser.GameObjects.Group {
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
-  updateLightsPosition() {
+  private updateLightsPosition() {
     this.scene.data.inc('firstBgLightDeltaX', 0.03);
     this.scene.data.inc('secondBgLightDeltaX', 0.05);
 
@@ -49,7 +49,7 @@ export class Background extends Phaser.GameObjects.Group {
     this.spriteLayers[7].tilePositionX = currentWorldCoordX * 0.7 + this.scene.data.get('secondBgLightDeltaX');
   }
 
-  updatePosition() {
+  private updatePosition() {
     const currentWorldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 0.8;
 
     this.spriteLayers[3].tilePositionX = currentWorldCoordX * 0.1;

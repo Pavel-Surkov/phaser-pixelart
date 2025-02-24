@@ -24,7 +24,7 @@ export class Tutorial extends Phaser.Scene {
     });
   }
 
-  createKeyAnimations() {
+  private createKeyAnimations() {
     this.w = this.add.sprite(this.scale.width / 2 - 150, this.scale.height / 2 - 40, KEYBOARD_SPRITE_KEY).setScale(4);
     this.a = this.add.sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
     this.s = this.add.sprite(this.scale.width / 2 - 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
@@ -85,7 +85,7 @@ export class Tutorial extends Phaser.Scene {
       .setOrigin(0.5, 0.5);
   }
 
-  creteSceneTransition() {
+  private createSceneTransition() {
     this.input.manager.enabled = true;
     this.input.once(
       'pointerdown',
@@ -115,7 +115,7 @@ export class Tutorial extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor('#000');
     this.createKeyAnimations();
-    this.creteSceneTransition();
+    this.createSceneTransition();
   }
 
   update() {

@@ -7,7 +7,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setState(EnemyStates.ALIVE);
   }
 
-  public die() {
+  die() {
     // TODO: play death animation
     this.destroy();
   }

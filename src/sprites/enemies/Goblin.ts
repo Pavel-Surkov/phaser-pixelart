@@ -96,12 +96,12 @@ export class Goblin extends Enemy {
     }
   }
 
-  public die() {
+  die() {
     this.hitArea.destroy();
     super.die();
   }
 
-  public update() {
+  update() {
     if (this.body) {
       this.hitArea.x = this.body.x + this.body.halfWidth;
       this.hitArea.y = this.body.y + this.body.halfHeight;

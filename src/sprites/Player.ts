@@ -154,7 +154,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  public killEnemy(enemy: Enemy) {
+  killEnemy(enemy: Enemy) {
     enemy.die();
   }
 
@@ -171,7 +171,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
   }
 
-  public update() {
+  update() {
     if (this.state === PlayerStates.DEAD) {
       return;
     }

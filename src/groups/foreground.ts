@@ -22,7 +22,7 @@ export class Foreground extends Phaser.GameObjects.Group {
     this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
-  updatePosition() {
+  private updatePosition() {
     this.spriteLayers[0].tilePositionX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X) * 1.1;
   }
 }
