@@ -45,6 +45,10 @@ export function loadAssets(scene: Phaser.Scene) {
     frameWidth: 104,
     frameHeight: 46,
   });
+  load.spritesheet(PlayerSprites.DEATH, '/witch/B_witch_death.png', {
+    frameWidth: 32,
+    frameHeight: 32,
+  });
 
   // Load Enemy sprites
   load.spritesheet(GoblinSprites.IDLE, '/enemies/goblin/Idle.png', {
@@ -59,6 +63,10 @@ export function loadAssets(scene: Phaser.Scene) {
     frameWidth: 150,
     frameHeight: 150,
   });
+  load.spritesheet(GoblinSprites.DEATH, '/enemies/goblin/Death.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
 
   load.spritesheet(SkeletonSprites.IDLE, '/enemies/skeleton/Idle.png', {
     frameWidth: 150,
@@ -69,6 +77,10 @@ export function loadAssets(scene: Phaser.Scene) {
     frameHeight: 150,
   });
   load.spritesheet(SkeletonSprites.ATTACK, '/enemies/skeleton/Attack.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+  load.spritesheet(SkeletonSprites.DEATH, '/enemies/skeleton/Death.png', {
     frameWidth: 150,
     frameHeight: 150,
   });

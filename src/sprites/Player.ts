@@ -94,6 +94,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 12,
     });
 
+    this.anims.create({
+      key: PlayerAnims.DEATH,
+      frames: this.anims.generateFrameNames(PlayerSprites.DEATH, { start: 0, end: 5 }),
+      frameRate: 5,
+    });
+
     this.scene.anims.create({
       key: 'hero_icon',
       frames: this.anims.generateFrameNames(PlayerSprites.ICON),
@@ -154,20 +160,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  killEnemy(enemy: Enemy) {
-    enemy.die();
-  }
-
-  // TODO: Playe die animation
   die() {
-    this.setState(PlayerStates.DEAD);
-    this.setImmovable(true);
-    this.setTint(0xff0000);
+    this.off(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
+    this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
 
+    this.setState(PlayerStates.DEAD).setVelocityX(0);
     this.hitArea.destroy();
-    this.anims.stop();
+    this.anims.play(PlayerAnims.DEATH);
     this.scene.physics.world.disable(this);
     this.scene.physics.pause();
+
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
+      if (animation.key === PlayerAnims.DEATH) {
+        this.destroy();
+      }
+    });
   }
 
   update() {

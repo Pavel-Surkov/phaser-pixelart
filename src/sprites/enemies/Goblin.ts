@@ -9,6 +9,7 @@ export class Goblin extends Enemy {
       idle: GoblinSprites.IDLE,
       run: GoblinSprites.RUN,
       attack: GoblinSprites.ATTACK,
+      death: GoblinSprites.DEATH,
     });
 
     this.configureBody();

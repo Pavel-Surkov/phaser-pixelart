@@ -5,6 +5,7 @@ type EnemySpriteKeys = {
   idle: string;
   run: string;
   attack: string;
+  death: string;
 };
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -43,6 +44,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       frames: this.anims.generateFrameNames(keys.attack),
       frameRate: 10,
     });
+
+    this.anims.create({
+      key: EnemyAnims.DEATH,
+      frames: this.anims.generateFrameNames(keys.death),
+      frameRate: 5,
+    });
   }
 
   addPhysicsAndHideHitArea() {
@@ -65,13 +72,19 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
-    // TODO: play death animation
+    this.setVelocityX(0).setState(EnemyStates.DEAD);
     this.hitArea.destroy();
-    this.destroy();
+    this.anims.play(EnemyAnims.DEATH);
+
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
+      if (animation.key === EnemyAnims.DEATH) {
+        this.destroy();
+      }
+    });
   }
 
   update(velocityX: number) {
-    if (this.state === EnemyStates.IMMOVABLE) {
+    if (this.state !== EnemyStates.ALIVE) {
       return;
     }
 

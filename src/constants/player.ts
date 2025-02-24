@@ -18,6 +18,7 @@ export enum PlayerAnims {
   RUN = 'player_run',
   CHARGE = 'player_charge',
   ATTACK = 'player_attack',
+  DEATH = 'player_death',
 }
 
 export type CustomCursorKeys = {

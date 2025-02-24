@@ -9,6 +9,7 @@ export class Skeleton extends Enemy {
       idle: SkeletonSprites.IDLE,
       run: SkeletonSprites.RUN,
       attack: SkeletonSprites.ATTACK,
+      death: SkeletonSprites.DEATH,
     });
 
     this.configureBody();
