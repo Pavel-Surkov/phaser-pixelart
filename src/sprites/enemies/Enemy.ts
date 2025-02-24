@@ -10,14 +10,8 @@ type EnemySpriteKeys = {
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
 
-  constructor(
-    scene: Phaser.Scene,
-    x: number,
-    y: number,
-    texture: string | Phaser.Textures.Texture,
-    spriteKeys: EnemySpriteKeys
-  ) {
-    super(scene, x, y, texture);
+  constructor(scene: Phaser.Scene, x: number, y: number, spriteKeys: EnemySpriteKeys) {
+    super(scene, x, y, spriteKeys.idle);
 
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -55,11 +49,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(velocityX: number) {
-    if (this.body) {
-      this.hitArea.x = this.body.x + this.body.halfWidth;
-      this.hitArea.y = this.body.y + this.body.halfHeight;
-    }
-
     if (this.state === EnemyStates.IMMOVABLE) {
       return;
     }

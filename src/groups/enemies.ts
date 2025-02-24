@@ -1,6 +1,7 @@
 import { EnemyTypes } from '@constants/enemies';
 import { Enemy } from '@sprites/enemies/Enemy';
 import { Goblin } from '@sprites/enemies/Goblin';
+import { Skeleton } from '@sprites/enemies/Skeleton';
 import { Player } from '@sprites/Player';
 
 export class Enemies extends Phaser.Physics.Arcade.Group {
@@ -21,6 +22,9 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
 
     if (type === EnemyTypes.GOBLIN) {
       enemy = new Goblin(this.scene, x, y);
+    } else if (type === EnemyTypes.SKELETON) {
+      console.log('run');
+      enemy = new Skeleton(this.scene, x, y);
     } else {
       // Default enemy sprite
       enemy = new Goblin(this.scene, x, y);

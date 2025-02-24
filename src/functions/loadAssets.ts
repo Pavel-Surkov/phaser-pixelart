@@ -1,5 +1,5 @@
 import { BgLayers } from '@constants/game';
-import { GoblinSprites } from '@constants/enemies';
+import { GoblinSprites, SkeletonSprites } from '@constants/enemies';
 import { PlayerSprites } from '@constants/player';
 
 export function loadAssets(scene: Phaser.Scene) {
@@ -46,16 +46,29 @@ export function loadAssets(scene: Phaser.Scene) {
     frameHeight: 46,
   });
 
-  // Load Goblin sprites
-  load.spritesheet(GoblinSprites.IDLE, '/goblin/Idle.png', {
+  // Load Enemy sprites
+  load.spritesheet(GoblinSprites.IDLE, '/enemies/goblin/Idle.png', {
     frameWidth: 150,
     frameHeight: 150,
   });
-  load.spritesheet(GoblinSprites.RUN, '/goblin/Run.png', {
+  load.spritesheet(GoblinSprites.RUN, '/enemies/goblin/Run.png', {
     frameWidth: 150,
     frameHeight: 150,
   });
-  load.spritesheet(GoblinSprites.ATTACK, '/goblin/Attack.png', {
+  load.spritesheet(GoblinSprites.ATTACK, '/enemies/goblin/Attack.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+
+  load.spritesheet(SkeletonSprites.IDLE, '/enemies/skeleton/Idle.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+  load.spritesheet(SkeletonSprites.RUN, '/enemies/skeleton/Walk.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+  load.spritesheet(SkeletonSprites.ATTACK, '/enemies/skeleton/Attack.png', {
     frameWidth: 150,
     frameHeight: 150,
   });

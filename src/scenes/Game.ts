@@ -1,3 +1,4 @@
+import { Goblin } from '@sprites/enemies/Goblin';
 import { Player } from '@sprites/Player';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
@@ -44,7 +45,8 @@ export class Game extends Phaser.Scene {
     this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
     this.physics.add.collider(this.player, this.floor);
 
-    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 2.75, 550, this.player, [this.floor]);
+    this.enemies.addEnemy(EnemyTypes.SKELETON, this.scale.width / 2.75, 550, this.player, [this.floor]);
+    this.enemies.addEnemy(EnemyTypes.GOBLIN, this.scale.width / 3.75, 550, this.player, [this.floor]);
 
     this.worldContainer = new WorldContainer(this, [...this.enemies.getChildren()]);
   }
