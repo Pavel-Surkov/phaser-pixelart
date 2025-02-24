@@ -1,6 +1,7 @@
 import { EnemyTypes } from '@constants/enemies';
 import { Enemy } from '@sprites/enemies/Enemy';
 import { Goblin } from '@sprites/enemies/Goblin';
+import { Mushroom } from '@sprites/enemies/Mushroom';
 import { Skeleton } from '@sprites/enemies/Skeleton';
 import { Player } from '@sprites/Player';
 
@@ -24,11 +25,14 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
       enemy = new Goblin(this.scene, x, y);
     } else if (type === EnemyTypes.SKELETON) {
       enemy = new Skeleton(this.scene, x, y);
+    } else if (type === EnemyTypes.MUSHROOM) {
+      enemy = new Mushroom(this.scene, x, y);
     } else {
       // Default enemy sprite
       enemy = new Goblin(this.scene, x, y);
     }
 
+    // Bind enemy to attack Player
     if (attackTarget instanceof Player) {
       this.scene.physics.add.overlap(
         attackTarget,

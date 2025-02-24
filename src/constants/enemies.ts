@@ -1,6 +1,7 @@
 export enum EnemyTypes {
   GOBLIN = 'goblin',
   SKELETON = 'skeleton',
+  MUSHROOM = 'mushroom',
 }
 
 export enum GoblinSprites {
@@ -15,6 +16,13 @@ export enum SkeletonSprites {
   RUN = 'skeleton_sprite_run',
   ATTACK = 'skeleton_sprite_attack',
   DEATH = 'skeleton_sprite_death',
+}
+
+export enum MushroomSprites {
+  IDLE = 'mushroom_sprite_idle',
+  RUN = 'mushroom_sprite_run',
+  ATTACK = 'mushroom_sprite_attack',
+  DEATH = 'mushroom_sprite_death',
 }
 
 export enum EnemyAnims {

@@ -160,6 +160,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  // TODO: Trigger GameOver and open a new scene
   die() {
     this.off(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);

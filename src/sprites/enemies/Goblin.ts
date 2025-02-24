@@ -3,6 +3,7 @@ import { Enemy } from './Enemy';
 
 export class Goblin extends Enemy {
   public velocityX = 150;
+  public attackRange = 70;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, {

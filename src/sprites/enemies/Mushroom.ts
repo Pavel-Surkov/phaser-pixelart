@@ -1,16 +1,16 @@
-import { EnemyAnims, EnemyStates, SkeletonSprites } from '@constants/enemies';
+import { EnemyAnims, EnemyStates, MushroomSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
-export class Skeleton extends Enemy {
+export class Mushroom extends Enemy {
   public velocityX = 150;
-  public attackRange = 80;
+  public attackRange = 60;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, {
-      idle: SkeletonSprites.IDLE,
-      run: SkeletonSprites.RUN,
-      attack: SkeletonSprites.ATTACK,
-      death: SkeletonSprites.DEATH,
+      idle: MushroomSprites.IDLE,
+      run: MushroomSprites.RUN,
+      attack: MushroomSprites.ATTACK,
+      death: MushroomSprites.DEATH,
     });
 
     this.configureBody();
@@ -21,8 +21,8 @@ export class Skeleton extends Enemy {
   }
 
   private configureBody() {
-    this.setSize(24, 52).setScale(1.6);
-    this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight);
+    this.setSize(24, 36).setScale(1.6);
+    this.body?.setOffset(this.width / 2 - this.body.halfWidth, this.height / 2 - this.body.halfHeight + 10);
     this.refreshBody();
   }
 
@@ -32,11 +32,11 @@ export class Skeleton extends Enemy {
     this.hitArea = this.scene.add.rectangle(
       this.body.x + this.body.halfWidth,
       this.body.y,
-      this.body.width * 3,
-      this.body.height / 1.2
+      this.body.width * 1.8,
+      this.body.height
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     this.hitArea.setOrigin(0, 0);
-    super.addPhysicsAndHideHitArea();
+    this.addPhysicsAndHideHitArea();
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {
