@@ -8,10 +8,10 @@ export enum GoblinSprites {
   ATTACK = 'goblin_sprite_attack',
 }
 
-export enum GoblinAnims {
-  IDLE = 'goblin_idle',
-  RUN = 'goblin_run',
-  ATTACK = 'goblin_attack',
+export enum EnemyAnims {
+  IDLE = 'idle',
+  RUN = 'run',
+  ATTACK = 'attack',
 }
 
 export enum EnemyStates {
