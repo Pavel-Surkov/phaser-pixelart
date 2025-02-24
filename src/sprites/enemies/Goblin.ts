@@ -76,8 +76,9 @@ export class Goblin extends Enemy {
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
-    const direction = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
-    this.setVelocityX(direction === 'right' ? this.velocityX : direction === 'left' ? -this.velocityX : 0);
+    const lookDirection = playerRelativePosX > 0 ? 'right' : 'left';
+    const runDirection = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
+    this.setVelocityX(runDirection === 'right' ? this.velocityX : runDirection === 'left' ? -this.velocityX : 0);
 
     if (this.body) {
       this.hitArea.x = this.body.x + this.body.halfWidth;
@@ -88,15 +89,21 @@ export class Goblin extends Enemy {
 
     // TODO: Add attack animation
 
-    if (direction === 'left') {
+    if (lookDirection === 'left') {
+      this.flipX = true;
+    } else {
+      this.flipX = false;
+    }
+
+    if (runDirection === 'left') {
       this.anims.play(GoblinAnims.RUN, true);
       this.flipX = true;
-    } else if (direction === 'right') {
+    } else if (runDirection === 'right') {
       this.anims.play(GoblinAnims.RUN, true);
       this.flipX = false;
     }
 
-    if (direction === 'none') {
+    if (runDirection === 'none') {
       this.anims.play(GoblinAnims.IDLE, true);
     }
   }
