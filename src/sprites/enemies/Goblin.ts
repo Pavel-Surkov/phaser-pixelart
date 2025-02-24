@@ -1,4 +1,4 @@
-import { GoblinAnims, GoblinSprites } from '@constants/enemies';
+import { EnemyStates, GoblinAnims, GoblinSprites } from '@constants/enemies';
 import { RegistryKeys } from '@constants/game';
 import { Enemy } from './Enemy';
 
@@ -20,6 +20,9 @@ export class Goblin extends Enemy {
     this.configureHitArea();
 
     this.anims.play(GoblinAnims.IDLE, true);
+
+    this.on(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
   }
 
   private configureBody() {
@@ -29,7 +32,7 @@ export class Goblin extends Enemy {
     this.refreshBody();
   }
 
-  // TODO: Add attack and then set private / public methods for all classes
+  // TODO: Set private / public methods for all classes
   private configureHitArea() {
     if (!this.body) return;
 
@@ -37,15 +40,12 @@ export class Goblin extends Enemy {
       this.body.x + this.body.halfWidth,
       this.body.y + this.body.halfHeight,
       this.body.width * 3.7,
-      this.body.height,
-      0xffffff,
-      0.5
+      this.body.height
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
-    this.hitArea.rotation = 0.35;
     this.scene.physics.world.enable(this.hitArea);
     this.hitArea.body.allowGravity = false;
     this.hitArea.body.enable = false;
-    // this.hitArea.visible = false;
+    this.hitArea.visible = false;
     this.scene.physics.world.remove(this.hitArea.body);
   }
 
@@ -68,11 +68,50 @@ export class Goblin extends Enemy {
       key: GoblinAnims.ATTACK,
       frames: this.anims.generateFrameNames(GoblinSprites.ATTACK),
       frameRate: 10,
-      repeat: -1,
     });
   }
 
+  private startHit(_: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) {
+    if (frame.index < 6) {
+      return;
+    }
+
+    this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
+
+    this.hitArea.body.enable = true;
+    this.scene.physics.world.add(this.hitArea.body);
+  }
+
+  private onAnimationStart(animation: Phaser.Animations.Animation) {
+    if (animation.key === GoblinAnims.ATTACK) {
+      this.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
+    }
+  }
+
+  private onAnimationComplete(animation: Phaser.Animations.Animation) {
+    if (animation.key === GoblinAnims.ATTACK) {
+      this.setState(EnemyStates.ALIVE);
+      this.hitArea.body.enable = false;
+      this.scene.physics.world.remove(this.hitArea.body);
+    }
+  }
+
+  public die() {
+    this.hitArea.destroy();
+    super.die();
+  }
+
   public update() {
+    if (this.body) {
+      this.hitArea.x = this.body.x + this.body.halfWidth;
+      this.hitArea.y = this.body.y + this.body.halfHeight;
+    }
+
+    if (this.state === EnemyStates.IMMOVABLE) {
+      return;
+    }
+
+    // TODO: move some of the logic to Enemy class
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
@@ -80,15 +119,15 @@ export class Goblin extends Enemy {
     const runDirection = Math.abs(playerRelativePosX) - 60 <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
     this.setVelocityX(runDirection === 'right' ? this.velocityX : runDirection === 'left' ? -this.velocityX : 0);
 
-    if (this.body) {
-      this.hitArea.x = this.body.x + this.body.halfWidth;
-      this.hitArea.y = this.body.y + this.body.halfHeight;
-
-      this.hitArea.rotation = this.flipX ? -0.35 : 0.35;
+    if (runDirection === 'none') {
+      this.setState(EnemyStates.IMMOVABLE);
+      this.anims.play(GoblinAnims.ATTACK);
+    } else {
+      this.calcMovement(runDirection, lookDirection);
     }
+  }
 
-    // TODO: Add attack animation
-
+  private calcMovement(runDirection: 'left' | 'right' | 'none', lookDirection: 'left' | 'right') {
     if (lookDirection === 'left') {
       this.flipX = true;
     } else {
@@ -101,10 +140,6 @@ export class Goblin extends Enemy {
     } else if (runDirection === 'right') {
       this.anims.play(GoblinAnims.RUN, true);
       this.flipX = false;
-    }
-
-    if (runDirection === 'none') {
-      this.anims.play(GoblinAnims.IDLE, true);
     }
   }
 }

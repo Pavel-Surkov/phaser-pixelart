@@ -58,9 +58,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.x + 92,
       this.y,
       130,
-      60,
-      0xffffff,
-      0.5
+      60
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     this.scene.physics.world.enable(this.hitArea);
     this.hitArea.body.allowGravity = false;
@@ -165,8 +163,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setTint(0xff0000);
     this.setImmovable(true);
 
-    this.hitArea.body.enable = false;
-    this.scene.physics.world.remove(this.hitArea.body);
+    this.hitArea.destroy();
 
     this.anims.play(PlayerAnims.IDLE);
     this.anims.stop();

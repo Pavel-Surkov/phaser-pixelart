@@ -13,3 +13,9 @@ export enum GoblinAnims {
   RUN = 'goblin_run',
   ATTACK = 'goblin_attack',
 }
+
+export enum EnemyStates {
+  ALIVE = 'ALIVE',
+  DEAD = 'DEAD',
+  IMMOVABLE = 'IMMOVABLE',
+}
