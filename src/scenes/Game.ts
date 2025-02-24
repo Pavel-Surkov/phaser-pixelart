@@ -1,4 +1,3 @@
-import { Goblin } from '@sprites/enemies/Goblin';
 import { Player } from '@sprites/Player';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';

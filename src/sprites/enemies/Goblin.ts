@@ -1,9 +1,8 @@
-import { EnemyStates, EnemyAnims, GoblinSprites } from '@constants/enemies';
+import { EnemyAnims, EnemyStates, GoblinSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class Goblin extends Enemy {
   public velocityX = 150;
-  public initialPosition: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, {
@@ -11,8 +10,6 @@ export class Goblin extends Enemy {
       run: GoblinSprites.RUN,
       attack: GoblinSprites.ATTACK,
     });
-
-    this.initialPosition = x;
 
     this.configureBody();
     this.configureHitArea();
@@ -27,7 +24,6 @@ export class Goblin extends Enemy {
     this.refreshBody();
   }
 
-  // TODO: Set private / public methods for all classes
   private configureHitArea() {
     if (!this.body) return;
 
@@ -37,22 +33,7 @@ export class Goblin extends Enemy {
       this.body.width * 3.7,
       this.body.height
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
-    this.scene.physics.world.enable(this.hitArea);
-    this.hitArea.body.allowGravity = false;
-    this.hitArea.body.enable = false;
-    this.hitArea.visible = false;
-    this.scene.physics.world.remove(this.hitArea.body);
-  }
-
-  private startHit(_: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) {
-    if (frame.index < 6) {
-      return;
-    }
-
-    this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
-
-    this.hitArea.body.enable = true;
-    this.scene.physics.world.add(this.hitArea.body);
+    this.addPhysicsAndHideHitArea();
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {
@@ -67,11 +48,6 @@ export class Goblin extends Enemy {
       this.hitArea.body.enable = false;
       this.scene.physics.world.remove(this.hitArea.body);
     }
-  }
-
-  die() {
-    this.hitArea.destroy();
-    super.die();
   }
 
   update() {

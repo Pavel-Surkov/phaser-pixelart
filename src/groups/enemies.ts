@@ -23,7 +23,6 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     if (type === EnemyTypes.GOBLIN) {
       enemy = new Goblin(this.scene, x, y);
     } else if (type === EnemyTypes.SKELETON) {
-      console.log('run');
       enemy = new Skeleton(this.scene, x, y);
     } else {
       // Default enemy sprite

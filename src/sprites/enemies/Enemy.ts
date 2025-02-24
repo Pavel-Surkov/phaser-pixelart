@@ -9,6 +9,7 @@ type EnemySpriteKeys = {
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+  public initialPosition: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, spriteKeys: EnemySpriteKeys) {
     super(scene, x, y, spriteKeys.idle);
@@ -16,8 +17,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
-    this.createAnimations(spriteKeys);
+    this.initialPosition = x;
 
+    this.createAnimations(spriteKeys);
     this.setState(EnemyStates.ALIVE);
   }
 
@@ -43,8 +45,28 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  addPhysicsAndHideHitArea() {
+    this.scene.physics.world.enable(this.hitArea);
+    this.hitArea.body.allowGravity = false;
+    this.hitArea.body.enable = false;
+    this.hitArea.visible = false;
+    this.scene.physics.world.remove(this.hitArea.body);
+  }
+
+  startHit(_: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) {
+    if (frame.index < 6) {
+      return;
+    }
+
+    this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
+
+    this.hitArea.body.enable = true;
+    this.scene.physics.world.add(this.hitArea.body);
+  }
+
   die() {
     // TODO: play death animation
+    this.hitArea.destroy();
     this.destroy();
   }
 
@@ -53,7 +75,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    // TODO: move some of the logic to Enemy class
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 

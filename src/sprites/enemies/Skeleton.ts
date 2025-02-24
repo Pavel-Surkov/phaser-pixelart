@@ -3,7 +3,6 @@ import { Enemy } from './Enemy';
 
 export class Skeleton extends Enemy {
   public velocityX = 150;
-  public initialPosition: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, {
@@ -12,12 +11,8 @@ export class Skeleton extends Enemy {
       attack: SkeletonSprites.ATTACK,
     });
 
-    this.initialPosition = x;
-
     this.configureBody();
     this.configureHitArea();
-
-    this.anims.play(EnemyAnims.IDLE, true);
 
     this.on(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
@@ -39,22 +34,7 @@ export class Skeleton extends Enemy {
       this.body.height / 1.2
     ) as unknown as Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     this.hitArea.setOrigin(0, 0);
-    this.scene.physics.world.enable(this.hitArea);
-    this.hitArea.body.allowGravity = false;
-    this.hitArea.body.enable = false;
-    this.hitArea.visible = false;
-    this.scene.physics.world.remove(this.hitArea.body);
-  }
-
-  private startHit(_: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame) {
-    if (frame.index < 6) {
-      return;
-    }
-
-    this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
-
-    this.hitArea.body.enable = true;
-    this.scene.physics.world.add(this.hitArea.body);
+    super.addPhysicsAndHideHitArea();
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {
@@ -70,11 +50,6 @@ export class Skeleton extends Enemy {
       this.hitArea.body.enable = false;
       this.scene.physics.world.remove(this.hitArea.body);
     }
-  }
-
-  die() {
-    this.hitArea.destroy();
-    super.die();
   }
 
   update() {
