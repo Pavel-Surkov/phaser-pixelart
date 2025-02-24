@@ -1,5 +1,5 @@
 import { BgLayers } from '@constants/game';
-import { GoblinSprites, MushroomSprites, SkeletonSprites } from '@constants/enemies';
+import { EyeSprites, GoblinSprites, MushroomSprites, SkeletonSprites } from '@constants/enemies';
 import { PlayerSprites } from '@constants/player';
 
 export function loadAssets(scene: Phaser.Scene) {
@@ -98,6 +98,19 @@ export function loadAssets(scene: Phaser.Scene) {
     frameHeight: 150,
   });
   load.spritesheet(MushroomSprites.DEATH, '/enemies/mushroom/Death.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+
+  load.spritesheet(EyeSprites.RUN, '/enemies/flying-eye/Flight.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+  load.spritesheet(EyeSprites.ATTACK, '/enemies/flying-eye/Attack.png', {
+    frameWidth: 150,
+    frameHeight: 150,
+  });
+  load.spritesheet(EyeSprites.DEATH, '/enemies/flying-eye/Death.png', {
     frameWidth: 150,
     frameHeight: 150,
   });

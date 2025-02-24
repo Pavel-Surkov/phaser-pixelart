@@ -1,5 +1,6 @@
 import { EnemyTypes } from '@constants/enemies';
 import { Enemy } from '@sprites/enemies/Enemy';
+import { FlyingEye } from '@sprites/enemies/FlyingEye';
 import { Goblin } from '@sprites/enemies/Goblin';
 import { Mushroom } from '@sprites/enemies/Mushroom';
 import { Skeleton } from '@sprites/enemies/Skeleton';
@@ -27,6 +28,8 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
       enemy = new Skeleton(this.scene, x, y);
     } else if (type === EnemyTypes.MUSHROOM) {
       enemy = new Mushroom(this.scene, x, y);
+    } else if (type === EnemyTypes.EYE) {
+      enemy = new FlyingEye(this.scene, x, y);
     } else {
       // Default enemy sprite
       enemy = new Goblin(this.scene, x, y);

@@ -8,6 +8,7 @@ type EnemySpriteKeys = {
   death: string;
 };
 
+// TODO: Add 2 HP to Mushroom and faster speed for Goblin
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   public initialPosition: number;

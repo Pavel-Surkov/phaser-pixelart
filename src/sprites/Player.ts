@@ -85,7 +85,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.anims.create({
       key: PlayerAnims.CHARGE,
       frames: this.anims.generateFrameNames(PlayerSprites.CHARGE),
-      frameRate: 10,
+      frameRate: 12,
     });
 
     this.anims.create({
