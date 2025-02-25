@@ -21,3 +21,7 @@ export enum BgLayers {
   LIGHT_ONE = 'background_lights_1',
   LIGHT_TWO = 'background_lights_2',
 }
+
+// How many floor panels exists. Needs for calculating maximum delta x for enemies relative to Scene center
+// Floor panel width is equal to Scene width
+export const MaxFloorPanels = 2;

@@ -1,5 +1,5 @@
 import { EnemyAnims, EnemyStates } from '@constants/enemies';
-import { RegistryKeys } from '@constants/game';
+import { MaxFloorPanels, RegistryKeys } from '@constants/game';
 
 type EnemySpriteKeys = {
   idle: string;
@@ -98,12 +98,33 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       Math.abs(playerRelativePosX) - this.attackRange <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
     this.setVelocityX(runDirection === 'right' ? velocityX : runDirection === 'left' ? -velocityX : 0);
 
+    const hasMaxDeltaX = this.calcHasMaxDeltaX();
+
+    if (hasMaxDeltaX) return;
+
     if (runDirection === 'none') {
       super.setState(EnemyStates.IMMOVABLE);
       this.anims.play(EnemyAnims.ATTACK);
     } else {
       this.calcMovement(runDirection, lookDirection);
     }
+  }
+
+  private calcHasMaxDeltaX() {
+    const reliabilityDelta = 40;
+    const maxDeltaX = this.scene.scale.width * MaxFloorPanels;
+    const centerDeltaX = this.x + this.parentContainer.x - this.scene.scale.width / 2;
+    const absoluteMaximumLimitX = maxDeltaX / 2 - reliabilityDelta;
+
+    if (Math.abs(centerDeltaX) > absoluteMaximumLimitX) {
+      const newAbsolutePosX = maxDeltaX - reliabilityDelta - this.parentContainer.x;
+      this.x =
+        centerDeltaX < absoluteMaximumLimitX ? newAbsolutePosX - maxDeltaX + reliabilityDelta * 2 : newAbsolutePosX;
+
+      return true;
+    }
+
+    return false;
   }
 
   private calcMovement(runDirection: 'left' | 'right' | 'none', lookDirection: 'left' | 'right') {

@@ -1,12 +1,16 @@
 import { RegistryKeys } from '@constants/game';
+import { InvisibleFloor } from '@sprites/InvisibleFloor';
 
 export class WorldContainer extends Phaser.GameObjects.Container {
+  public floor: InvisibleFloor;
+
   constructor(scene: Phaser.Scene, children: Phaser.GameObjects.GameObject[]) {
-    super(scene, 0, 0, [...children]);
+    super(scene, 0, 0, children);
 
     this.scene.add.existing(this);
-    this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
     this.setDepth(1);
+
+    this.scene.events.on('updateWorldCoordX', this.updatePosition, this);
   }
 
   private updatePosition() {

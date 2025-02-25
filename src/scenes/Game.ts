@@ -40,13 +40,16 @@ export class Game extends Phaser.Scene {
     new Foreground(this);
     this.floor = new InvisibleFloor(this);
     this.enemies = new Enemies(this.physics.world, this);
+    this.worldContainer = new WorldContainer(this, [...this.enemies.getChildren()]);
 
     this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
     this.physics.add.collider(this.player, this.floor);
 
-    this.enemies.addEnemy(EnemyTypes.EYE, this.scale.width / 2.75, 550, this.player, [this.floor]);
-
-    this.worldContainer = new WorldContainer(this, [...this.enemies.getChildren()]);
+    // TODO: Move this to a custom method
+    const newEnemy = this.enemies.addEnemy(EnemyTypes.SKELETON, this.scale.width / 2.75, 550, this.player, [
+      this.floor,
+    ]);
+    this.worldContainer.add(newEnemy);
   }
 
   update() {

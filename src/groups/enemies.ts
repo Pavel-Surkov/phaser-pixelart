@@ -48,5 +48,7 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
 
     this.add(enemy);
     collidesWith?.forEach((obj) => this.scene.physics.add.collider(enemy, obj));
+
+    return enemy;
   }
 }
