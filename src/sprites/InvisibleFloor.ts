@@ -14,6 +14,6 @@ export class InvisibleFloor extends Phaser.Physics.Arcade.Sprite {
 
     this.setVisible(false);
     this.body?.setSize(this.scene.scale.width * MaxFloorPanels, 40);
-    this.setDebug(false, false, 0x000);
+    this.setDebug(true, true, 0x000);
   }
 }

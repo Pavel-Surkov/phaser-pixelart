@@ -1,7 +1,7 @@
 import { Player } from '@sprites/Player';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
-import { RegistryKeys, SceneKeys } from '@constants/game';
+import { GlobalEvents, RegistryKeys, SceneKeys } from '@constants/game';
 import { loadAssets } from '@functions/loadAssets';
 import { Enemies } from '@groups/enemies';
 import { EnemyTypes } from '@constants/enemies';
@@ -14,6 +14,7 @@ export class Game extends Phaser.Scene {
   private worldContainer: WorldContainer;
   private floor: InvisibleFloor;
   public layer: Phaser.GameObjects.Layer;
+  private scoreText: Phaser.GameObjects.Text;
 
   public gameOver = false;
 
@@ -31,10 +32,11 @@ export class Game extends Phaser.Scene {
 
   create() {
     this.cameras.main.fadeIn(1000, 0, 0, 0, () => this.scene.remove(SceneKeys.Tutorial), this);
-
     this.sound.add('loop', { loop: true }).play();
-
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
+
+    this.scoreText = this.add.text(this.scale.width / 2, 100, '0', { fontFamily: 'silver', fontSize: 80 }).setDepth(5);
+    this.events.on(GlobalEvents.SCORE_INC, () => this.scoreText.setText(String(+this.scoreText.text + 1)), this);
 
     new Background(this);
     new Foreground(this);

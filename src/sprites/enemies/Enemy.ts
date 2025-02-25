@@ -1,5 +1,5 @@
 import { EnemyAnims, EnemyStates } from '@constants/enemies';
-import { MaxFloorPanels, RegistryKeys } from '@constants/game';
+import { GlobalEvents, MaxFloorPanels, RegistryKeys } from '@constants/game';
 
 type EnemySpriteKeys = {
   idle: string;
@@ -74,6 +74,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
+    if (this.state === EnemyStates.DEAD) return;
+
+    this.scene.events.emit(GlobalEvents.SCORE_INC);
     this.setVelocityX(0).setState(EnemyStates.DEAD);
     this.hitArea.destroy();
     this.anims.play(EnemyAnims.DEATH);

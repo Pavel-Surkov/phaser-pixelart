@@ -10,6 +10,9 @@ export function loadAssets(scene: Phaser.Scene) {
   // Load audio
   load.audio('loop', '/audio/loop.ogg');
 
+  // Load fonts
+  load.font('silver', '/fonts/Silver.woff2', 'woff2');
+
   // Load background assets
   load.image(BgLayers.ZERO, '/background/Layer_0011_0.png');
   load.image(BgLayers.ONE, '/background/Layer_0010_1.png');
@@ -25,10 +28,6 @@ export function loadAssets(scene: Phaser.Scene) {
   load.image(BgLayers.NINE, '/background/Layer_0000_9.png');
 
   // Load Player sprites
-  load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
-    frameWidth: 50,
-    frameHeight: 50,
-  });
   load.spritesheet(PlayerSprites.IDLE, '/witch/B_witch_idle.png', {
     frameWidth: 32,
     frameHeight: 48,
@@ -49,6 +48,10 @@ export function loadAssets(scene: Phaser.Scene) {
     frameWidth: 32,
     frameHeight: 32,
   });
+  // load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
+  //   frameWidth: 50,
+  //   frameHeight: 50,
+  // });
 
   // Load Enemy sprites
   load.spritesheet(GoblinSprites.IDLE, '/enemies/goblin/Idle.png', {

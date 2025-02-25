@@ -100,14 +100,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 5,
     });
 
-    this.scene.anims.create({
-      key: 'hero_icon',
-      frames: this.anims.generateFrameNames(PlayerSprites.ICON),
-      frameRate: 10,
-      repeat: -1,
-    });
+    // this.scene.anims.create({
+    //   key: 'hero_icon',
+    //   frames: this.anims.generateFrameNames(PlayerSprites.ICON),
+    //   frameRate: 10,
+    //   repeat: -1,
+    // });
 
-    this.scene.add.sprite(60, 60, 'hero_icon').setScale(1.5).setDepth(2).play('hero_icon');
+    // this.scene.add.sprite(60, 60, 'hero_icon').setScale(1.5).setDepth(2).play('hero_icon');
 
     this.on(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
@@ -162,6 +162,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   // TODO: Trigger GameOver and open a new scene
   die() {
+    if (this.state === PlayerStates.DEAD) return;
+
     this.off(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
 
