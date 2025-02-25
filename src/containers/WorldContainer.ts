@@ -4,7 +4,7 @@ import { InvisibleFloor } from '@sprites/InvisibleFloor';
 export class WorldContainer extends Phaser.GameObjects.Container {
   public floor: InvisibleFloor;
 
-  constructor(scene: Phaser.Scene, children: Phaser.GameObjects.GameObject[]) {
+  constructor(scene: Phaser.Scene, children: Phaser.GameObjects.GameObject[] = []) {
     super(scene, 0, 0, children);
 
     this.scene.add.existing(this);

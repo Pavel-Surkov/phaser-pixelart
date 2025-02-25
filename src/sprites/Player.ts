@@ -19,22 +19,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number, enemies: Enemies) {
     super(scene, x, y, PlayerSprites.IDLE);
 
-    scene.add.existing(this);
-    scene.physics.world.enable(this);
-
     this.setState(PlayerStates.ALIVE);
 
     this.configureBody();
     this.createAnimations();
-    this.configureHitArea();
-
-    this.scene.physics.add.overlap(
-      enemies.getChildren(),
-      this.hitArea,
-      (enemy) => (enemy as Enemy).die(),
-      undefined,
-      this
-    );
+    this.configureHitArea(enemies.getChildren());
 
     scene.cameras.main.startFollow(this, false, 0.1, 0.1);
     scene.cameras.main.setDeadzone(0, 0);
@@ -50,10 +39,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private configureBody() {
+    this.scene.add.existing(this);
+    this.scene.physics.world.enable(this);
+
     this.setCollideWorldBounds(true).setInteractive().setScale(2).setBodySize(16, 32).refreshBody().setDepth(1);
   }
 
-  private configureHitArea() {
+  private configureHitArea(enemies: Phaser.GameObjects.GameObject[]) {
     this.hitArea = this.scene.add.rectangle(
       this.x + 92,
       this.y,
@@ -65,6 +57,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.hitArea.body.enable = false;
     this.hitArea.visible = false;
     this.scene.physics.world.remove(this.hitArea.body);
+
+    this.scene.physics.add.overlap(enemies, this.hitArea, (enemy) => (enemy as Enemy).die(), undefined, this);
   }
 
   private createAnimations() {
@@ -120,10 +114,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
 
-    this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
-    this.hitArea.y = this.y;
-    this.hitArea.body.enable = true;
-    this.scene.physics.world.add(this.hitArea.body);
+    if (this.hitArea) {
+      this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
+      this.hitArea.y = this.y;
+      this.hitArea.body.enable = true;
+      this.scene.physics.world.add(this.hitArea.body);
+    }
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {
@@ -168,6 +164,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.off(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onAnimationComplete, this);
 
     this.setState(PlayerStates.DEAD).setVelocityX(0);
+    this.scene.registry.set(RegistryKeys.GAME_OVER, true);
+
     this.hitArea.destroy();
     this.anims.play(PlayerAnims.DEATH);
     this.scene.physics.world.disable(this);

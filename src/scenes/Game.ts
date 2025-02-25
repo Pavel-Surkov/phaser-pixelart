@@ -4,18 +4,16 @@ import { InvisibleFloor } from '@sprites/InvisibleFloor';
 import { GlobalEvents, RegistryKeys, SceneKeys } from '@constants/game';
 import { loadAssets } from '@functions/loadAssets';
 import { Enemies } from '@groups/enemies';
-import { EnemyTypes } from '@constants/enemies';
-import { WorldContainer } from '@containers/WorldContainer';
+
 import { Background } from '@groups/background';
 
 export class Game extends Phaser.Scene {
-  public player: Player;
   private enemies: Enemies;
-  private worldContainer: WorldContainer;
-  private floor: InvisibleFloor;
-  public layer: Phaser.GameObjects.Layer;
   private scoreText: Phaser.GameObjects.Text;
 
+  public player: Player;
+  public floor: InvisibleFloor;
+  public layer: Phaser.GameObjects.Layer;
   public gameOver = false;
 
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
@@ -23,7 +21,7 @@ export class Game extends Phaser.Scene {
   }
 
   init() {
-    this.gameOver = false;
+    this.registry.set(RegistryKeys.GAME_OVER, false);
   }
 
   preload() {
@@ -41,21 +39,15 @@ export class Game extends Phaser.Scene {
     new Background(this);
     new Foreground(this);
     this.floor = new InvisibleFloor(this);
-    this.enemies = new Enemies(this.physics.world, this);
-    this.worldContainer = new WorldContainer(this, [...this.enemies.getChildren()]);
+    this.enemies = new Enemies(this, [this.floor]);
 
     this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
     this.physics.add.collider(this.player, this.floor);
-
-    // TODO: Move this to a custom method
-    const newEnemy = this.enemies.addEnemy(EnemyTypes.SKELETON, this.scale.width / 2.75, 550, this.player, [
-      this.floor,
-    ]);
-    this.worldContainer.add(newEnemy);
+    this.enemies.bindAttack(this.player);
   }
 
   update() {
-    if (this.gameOver) return;
+    if (this.registry.get(RegistryKeys.GAME_OVER)) return;
 
     this.player.update();
     this.enemies.getChildren().forEach((child) => child.update());

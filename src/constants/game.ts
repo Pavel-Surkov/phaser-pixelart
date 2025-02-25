@@ -1,3 +1,7 @@
+// How many floor panels exists. Needs for calculating maximum delta x for enemies relative to Scene center
+// Floor panel width is equal to Scene width
+export const MaxFloorPanels = 2;
+
 export enum SceneKeys {
   GAME = 'game',
   Tutorial = 'tutorial',
@@ -5,6 +9,7 @@ export enum SceneKeys {
 
 export enum RegistryKeys {
   WORLD_COORD_X = 'worldCoordinateX',
+  GAME_OVER = 'gameOver',
 }
 
 export enum BgLayers {
@@ -25,7 +30,3 @@ export enum BgLayers {
 export enum GlobalEvents {
   SCORE_INC = 'score_inc',
 }
-
-// How many floor panels exists. Needs for calculating maximum delta x for enemies relative to Scene center
-// Floor panel width is equal to Scene width
-export const MaxFloorPanels = 2;

@@ -1,4 +1,7 @@
-import { EnemyTypes } from '@constants/enemies';
+import { EnemySpawnDuration, EnemyTypes } from '@constants/enemies';
+import { RegistryKeys } from '@constants/game';
+import { WorldContainer } from '@containers/WorldContainer';
+import { Game } from '@scenes/Game';
 import { Enemy } from '@sprites/enemies/Enemy';
 import { FlyingEye } from '@sprites/enemies/FlyingEye';
 import { Goblin } from '@sprites/enemies/Goblin';
@@ -7,19 +10,61 @@ import { Skeleton } from '@sprites/enemies/Skeleton';
 import { Player } from '@sprites/Player';
 
 export class Enemies extends Phaser.Physics.Arcade.Group {
-  constructor(world: Phaser.Physics.Arcade.World, scene: Phaser.Scene) {
-    super(world, scene);
+  private container: Phaser.GameObjects.Container;
+  private attackTarget: Phaser.GameObjects.Sprite | undefined;
+  private collidesWith: Phaser.GameObjects.GameObject[];
+  private spawnTimeEvent: Phaser.Time.TimerEvent;
+
+  constructor(scene: Game, collidesWith: Phaser.GameObjects.GameObject[] = []) {
+    super(scene.physics.world, scene);
 
     this.setDepth(2);
+    this.container = new WorldContainer(scene);
+    this.collidesWith = collidesWith;
+
+    this.spawnTimeEvent = this.scene.time.addEvent({
+      delay: EnemySpawnDuration,
+      callback: this.addEnemy,
+      callbackScope: this,
+      loop: true,
+    });
   }
 
-  addEnemy(
-    type: EnemyTypes,
-    x: number,
-    y: number,
-    attackTarget: Phaser.GameObjects.Sprite,
-    collidesWith?: Phaser.GameObjects.GameObject[]
-  ) {
+  public bindAttack(target: Phaser.GameObjects.Sprite) {
+    this.attackTarget = target;
+  }
+
+  private addEnemy() {
+    if (!this.attackTarget) return;
+
+    if (this.scene.registry.get(RegistryKeys.GAME_OVER)) {
+      this.spawnTimeEvent.destroy();
+      return;
+    }
+
+    const enemyTypes = Object.values(EnemyTypes);
+    const enemyTypeToSpawn = enemyTypes[Phaser.Math.Between(0, enemyTypes.length - 1)];
+
+    const newEnemy = this.createEnemy(enemyTypeToSpawn, this.scene.scale.width / 2.75, 550);
+
+    // Bind enemy to attack Player
+    if (this.attackTarget instanceof Player) {
+      this.scene.physics.add.overlap(
+        this.attackTarget,
+        newEnemy.hitArea,
+        (attackTarget) => (attackTarget as Player).die(),
+        undefined,
+        this
+      );
+    }
+
+    this.add(newEnemy);
+    this.container.add(newEnemy);
+
+    this.collidesWith?.forEach((obj) => this.scene.physics.add.collider(newEnemy, obj));
+  }
+
+  private createEnemy(type: EnemyTypes, x: number, y: number) {
     let enemy: Enemy;
 
     if (type === EnemyTypes.GOBLIN) {
@@ -34,20 +79,6 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
       // Default enemy sprite
       enemy = new Goblin(this.scene, x, y);
     }
-
-    // Bind enemy to attack Player
-    if (attackTarget instanceof Player) {
-      this.scene.physics.add.overlap(
-        attackTarget,
-        enemy.hitArea,
-        (attackTarget) => (attackTarget as Player).die(),
-        undefined,
-        this
-      );
-    }
-
-    this.add(enemy);
-    collidesWith?.forEach((obj) => this.scene.physics.add.collider(enemy, obj));
 
     return enemy;
   }
