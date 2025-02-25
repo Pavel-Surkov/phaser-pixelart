@@ -114,12 +114,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.startHit);
 
-    if (this.hitArea) {
-      this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
-      this.hitArea.y = this.y;
-      this.hitArea.body.enable = true;
-      this.scene.physics.world.add(this.hitArea.body);
-    }
+    this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
+    this.hitArea.y = this.y;
+    this.hitArea.body.enable = true;
+    this.scene.physics.world.add(this.hitArea.body);
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {
@@ -166,6 +164,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setState(PlayerStates.DEAD).setVelocityX(0);
     this.scene.registry.set(RegistryKeys.GAME_OVER, true);
 
+    this.anims.stop();
     this.hitArea.destroy();
     this.anims.play(PlayerAnims.DEATH);
     this.scene.physics.world.disable(this);

@@ -76,6 +76,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   die() {
     if (this.state === EnemyStates.DEAD) return;
 
+    this.anims.stop();
     this.scene.events.emit(GlobalEvents.SCORE_INC);
     this.setVelocityX(0).setState(EnemyStates.DEAD);
     this.hitArea.destroy();
