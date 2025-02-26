@@ -116,8 +116,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.hitArea.x = this.flipX ? this.x - this.body!.width * 3 : this.x + this.body!.width * 3;
     this.hitArea.y = this.y;
-    this.hitArea.body.enable = true;
-    this.scene.physics.world.add(this.hitArea.body);
+
+    if (this.hitArea.body) {
+      this.hitArea.body.enable = true;
+      this.scene.physics.world.add(this.hitArea.body);
+    }
   }
 
   private onAnimationStart(animation: Phaser.Animations.Animation) {

@@ -1,5 +1,5 @@
 import { EnemySpawnDuration, EnemyTypes } from '@constants/enemies';
-import { RegistryKeys } from '@constants/game';
+import { MaxFloorPanels, RegistryKeys } from '@constants/game';
 import { WorldContainer } from '@containers/WorldContainer';
 import { Game } from '@scenes/Game';
 import { Enemy } from '@sprites/enemies/Enemy';
@@ -45,7 +45,10 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     const enemyTypes = Object.values(EnemyTypes);
     const enemyTypeToSpawn = enemyTypes[Phaser.Math.Between(0, enemyTypes.length - 1)];
 
-    const newEnemy = this.createEnemy(enemyTypeToSpawn, this.scene.scale.width / 2.75, 550);
+    const spawnPositions = [-this.container.x - 250, -this.container.x + this.scene.scale.width + 250];
+    const currentSpawnPos = spawnPositions[Phaser.Math.Between(0, spawnPositions.length - 1)];
+
+    const newEnemy = this.createEnemy(enemyTypeToSpawn, currentSpawnPos, 550);
 
     // Bind enemy to attack Player
     if (this.attackTarget instanceof Player) {
