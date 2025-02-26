@@ -4,7 +4,8 @@ export const MaxFloorPanels = 2;
 
 export enum SceneKeys {
   GAME = 'game',
-  Tutorial = 'tutorial',
+  TUTORIAL = 'tutorial',
+  PRELOAD = 'preload',
 }
 
 export enum RegistryKeys {

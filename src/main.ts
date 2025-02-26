@@ -1,5 +1,6 @@
 import { SceneKeys } from '@constants/game';
 import { Game as MainGame } from '@scenes/Game';
+import { Preload } from '@scenes/Preload';
 import { Tutorial } from '@scenes/Tutorial';
 import { AUTO, Game, Scale, Types } from 'phaser';
 
@@ -11,7 +12,7 @@ const config: Types.Core.GameConfig = {
   width: 1280,
   height: 720,
   parent: 'game-container',
-  backgroundColor: '#028af8',
+  backgroundColor: '#000',
   physics: {
     default: 'arcade',
     arcade: {
@@ -29,7 +30,8 @@ const config: Types.Core.GameConfig = {
   },
   pixelArt: true,
   scene: [
-    // new Tutorial({ key: SceneKeys.Tutorial }),
+    new Tutorial({ key: SceneKeys.TUTORIAL }),
+    new Preload({ key: SceneKeys.PRELOAD }),
     new MainGame({ key: SceneKeys.GAME }),
   ],
 };

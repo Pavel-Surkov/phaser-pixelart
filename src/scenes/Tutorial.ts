@@ -90,7 +90,8 @@ export class Tutorial extends Phaser.Scene {
     this.input.once(
       'pointerdown',
       () => {
-        this.scene.launch(SceneKeys.GAME);
+        this.scene.launch(SceneKeys.PRELOAD);
+        this.scene.remove(SceneKeys.TUTORIAL);
       },
       this
     );

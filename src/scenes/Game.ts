@@ -29,7 +29,7 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.fadeIn(1000, 0, 0, 0, () => this.scene.remove(SceneKeys.Tutorial), this);
+    this.cameras.main.fadeIn(1000, 0, 0, 0, () => this.scene.remove(SceneKeys.TUTORIAL), this);
     this.sound.add('loop', { loop: true }).play();
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
