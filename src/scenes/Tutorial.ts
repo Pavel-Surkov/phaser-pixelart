@@ -87,8 +87,8 @@ export class Tutorial extends Phaser.Scene {
 
   private createSceneTransition() {
     this.input.manager.enabled = true;
-    this.input.once(
-      'pointerdown',
+    this.input.keyboard!.once(
+      'keydown',
       () => {
         this.scene.launch(SceneKeys.PRELOAD);
         this.scene.remove(SceneKeys.TUTORIAL);
@@ -98,7 +98,7 @@ export class Tutorial extends Phaser.Scene {
 
     this.time.delayedCall(2000, () => {
       const clickText = this.add
-        .text(this.scale.width / 2, this.scale.height / 2 + 200, 'Click to continue', {
+        .text(this.scale.width / 2, this.scale.height / 2 + 200, 'Press any button to continue', {
           fontSize: 24,
         })
         .setOrigin(0.5, 0.5)

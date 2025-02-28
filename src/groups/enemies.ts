@@ -26,7 +26,7 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
 
     this.decreaseSpawnDelay();
 
-    // Each 10 sec make the game harder
+    // Each 10 sec spawn enemies faster
     this.scene.time.addEvent({
       delay: 10000,
       callback: () => this.decreaseSpawnDelay(),
@@ -45,7 +45,6 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
       loop: true,
     });
 
-    // Decrease spawnDelay to make the game harder
     this.spawnDelay = Math.max(500, this.spawnDelay * 0.9);
   }
 
