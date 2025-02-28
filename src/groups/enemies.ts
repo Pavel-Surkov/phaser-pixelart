@@ -1,4 +1,4 @@
-import { EnemySpawnDuration, EnemyTypes } from '@constants/enemies';
+import { EnemyTypes } from '@constants/enemies';
 import { RegistryKeys } from '@constants/game';
 import { WorldContainer } from '@containers/WorldContainer';
 import { Game } from '@scenes/Game';
@@ -13,7 +13,9 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
   private container: Phaser.GameObjects.Container;
   private attackTarget: Phaser.GameObjects.Sprite | undefined;
   private collidesWith: Phaser.GameObjects.GameObject[];
-  private spawnTimeEvent: Phaser.Time.TimerEvent;
+
+  private spawnDelay = 2000;
+  private spawnEvent: Phaser.Time.TimerEvent;
 
   constructor(scene: Game, collidesWith: Phaser.GameObjects.GameObject[] = []) {
     super(scene.physics.world, scene);
@@ -22,12 +24,29 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     this.container = new WorldContainer(scene);
     this.collidesWith = collidesWith;
 
-    this.spawnTimeEvent = this.scene.time.addEvent({
-      delay: EnemySpawnDuration,
+    this.decreaseSpawnDelay();
+
+    // Each 10 sec make the game harder
+    this.scene.time.addEvent({
+      delay: 10000,
+      callback: () => this.decreaseSpawnDelay(),
+      callbackScope: this,
+      repeat: -1,
+    });
+  }
+
+  private decreaseSpawnDelay() {
+    if (this.spawnEvent) this.spawnEvent.remove();
+
+    this.spawnEvent = this.scene.time.addEvent({
+      delay: this.spawnDelay,
       callback: this.addEnemy,
       callbackScope: this,
       loop: true,
     });
+
+    // Decrease spawnDelay to make the game harder
+    this.spawnDelay = Math.max(500, this.spawnDelay * 0.9);
   }
 
   public bindAttack(target: Phaser.GameObjects.Sprite) {
@@ -38,13 +57,12 @@ export class Enemies extends Phaser.Physics.Arcade.Group {
     if (!this.attackTarget) return;
 
     if (this.scene.registry.get(RegistryKeys.GAME_OVER)) {
-      this.spawnTimeEvent.destroy();
+      this.spawnEvent.destroy();
       return;
     }
 
     const enemyTypes = Object.values(EnemyTypes);
     const enemyTypeToSpawn = enemyTypes[Phaser.Math.Between(0, enemyTypes.length - 1)];
-
     const spawnPositions = [-this.container.x - 250, -this.container.x + this.scene.scale.width + 250];
     const currentSpawnPos = spawnPositions[Phaser.Math.Between(0, spawnPositions.length - 1)];
 

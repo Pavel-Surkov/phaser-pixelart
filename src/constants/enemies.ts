@@ -1,5 +1,3 @@
-export const EnemySpawnDuration = 2000;
-
 export enum EnemyTypes {
   GOBLIN = 'goblin',
   SKELETON = 'skeleton',
