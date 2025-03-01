@@ -179,7 +179,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         // this.destroy();
 
         this.scene.scene.start(SceneKeys.GAME_OVER);
-        // this.scene.scene.sleep(SceneKeys.GAME);
       }
     });
   }

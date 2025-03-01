@@ -23,14 +23,16 @@ export class Game extends Phaser.Scene {
     this.registry.set(RegistryKeys.GAME_OVER, false);
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
-    // TODO: Fix sound
-    this.sound.pauseAll();
+    this.scoreText && this.scoreText.setText('0');
+    this.events.off(GlobalEvents.SCORE_INC);
+    this.scene.scene.events.off('updateWorldCoordX');
   }
 
   create() {
     this.cameras.main.fadeIn(1000, 0, 0, 0, () => this.scene.remove(SceneKeys.TUTORIAL), this);
-    this.sound.add('loop', { loop: true }).play();
-    this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
+    this.sound.add('loop', { loop: true });
+
+    !this.sound.isPlaying('loop') && this.sound.play('loop');
 
     this.scoreText = this.add.text(this.scale.width / 2, 100, '0', { fontFamily: 'silver', fontSize: 80 }).setDepth(5);
     this.events.on(GlobalEvents.SCORE_INC, () => this.scoreText.setText(String(+this.scoreText.text + 1)), this);
