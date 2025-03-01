@@ -46,7 +46,7 @@ export function loadAssets(scene: Phaser.Scene) {
   });
   load.spritesheet(PlayerSprites.DEATH, '/witch/B_witch_death.png', {
     frameWidth: 32,
-    frameHeight: 32,
+    frameHeight: 40,
   });
   // load.spritesheet(PlayerSprites.ICON, '/witch/B_witch_icon.webp', {
   //   frameWidth: 50,

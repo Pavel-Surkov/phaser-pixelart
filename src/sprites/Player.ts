@@ -90,8 +90,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.anims.create({
       key: PlayerAnims.DEATH,
-      frames: this.anims.generateFrameNames(PlayerSprites.DEATH, { start: 0, end: 5 }),
-      frameRate: 5,
+      frames: this.anims.generateFrameNames(PlayerSprites.DEATH),
+      frameRate: 10,
     });
 
     // this.scene.anims.create({
@@ -173,9 +173,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
     this.scene.physics.pause();
 
+    // TODO: Destroy Player when Scene changes
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
       if (animation.key === PlayerAnims.DEATH) {
-        this.destroy();
+        // this.destroy();
       }
     });
   }
