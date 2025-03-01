@@ -16,7 +16,7 @@ export class Preload extends Phaser.Scene {
     loadAssets(this);
 
     this.load.on('complete', () => {
-      this.scene.launch(SceneKeys.GAME);
+      this.scene.start(SceneKeys.GAME);
     });
   }
 

@@ -1,4 +1,4 @@
-import { RegistryKeys } from '@constants/game';
+import { RegistryKeys, SceneKeys } from '@constants/game';
 import { CustomCursorKeys, PlayerAnims, PlayerSprites, PlayerStates } from '@constants/player';
 import Phaser from 'phaser';
 import { Enemy } from './enemies/Enemy';
@@ -157,7 +157,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  // TODO: Trigger GameOver and open a new scene
   die() {
     if (this.state === PlayerStates.DEAD) return;
 
@@ -174,9 +173,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.pause();
 
     // TODO: Destroy Player when Scene changes
+    // TODO: Trigger GameOver and open a new scene
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
       if (animation.key === PlayerAnims.DEATH) {
         // this.destroy();
+
+        this.scene.scene.start(SceneKeys.GAME_OVER);
+        // this.scene.scene.sleep(SceneKeys.GAME);
       }
     });
   }

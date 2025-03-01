@@ -90,8 +90,7 @@ export class Tutorial extends Phaser.Scene {
     this.input.keyboard!.once(
       'keydown',
       () => {
-        this.scene.launch(SceneKeys.PRELOAD);
-        this.scene.remove(SceneKeys.TUTORIAL);
+        this.scene.start(SceneKeys.PRELOAD);
       },
       this
     );

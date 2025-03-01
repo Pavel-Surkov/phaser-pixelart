@@ -2,7 +2,6 @@ import { Player } from '@sprites/Player';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
 import { GlobalEvents, RegistryKeys, SceneKeys } from '@constants/game';
-import { loadAssets } from '@functions/loadAssets';
 import { Enemies } from '@groups/enemies';
 
 import { Background } from '@groups/background';
@@ -22,10 +21,10 @@ export class Game extends Phaser.Scene {
 
   init() {
     this.registry.set(RegistryKeys.GAME_OVER, false);
-  }
+    this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
-  preload() {
-    loadAssets(this);
+    // TODO: Fix sound
+    this.sound.pauseAll();
   }
 
   create() {

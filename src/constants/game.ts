@@ -6,6 +6,7 @@ export enum SceneKeys {
   GAME = 'game',
   TUTORIAL = 'tutorial',
   PRELOAD = 'preload',
+  GAME_OVER = 'gameOver',
 }
 
 export enum RegistryKeys {

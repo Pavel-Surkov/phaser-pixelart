@@ -1,5 +1,6 @@
 import { SceneKeys } from '@constants/game';
 import { Game as MainGame } from '@scenes/Game';
+import { GameOver } from '@scenes/GameOver';
 import { Preload } from '@scenes/Preload';
 import { Tutorial } from '@scenes/Tutorial';
 import { AUTO, Game, Scale, Types } from 'phaser';
@@ -33,6 +34,7 @@ const config: Types.Core.GameConfig = {
     new Tutorial({ key: SceneKeys.TUTORIAL }),
     new Preload({ key: SceneKeys.PRELOAD }),
     new MainGame({ key: SceneKeys.GAME }),
+    new GameOver({ key: SceneKeys.GAME_OVER }),
   ],
 };
 
