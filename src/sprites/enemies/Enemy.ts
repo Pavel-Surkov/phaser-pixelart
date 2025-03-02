@@ -98,6 +98,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
     const lookDirection = playerRelativePosX > 0 ? 'right' : 'left';
+
     const runDirection =
       Math.abs(playerRelativePosX) - this.attackRange <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
     this.setVelocityX(runDirection === 'right' ? velocityX : runDirection === 'left' ? -velocityX : 0);
@@ -106,11 +107,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     if (hasMaxDeltaX) return;
 
+    if (lookDirection === 'left') {
+      this.flipX = true;
+    } else {
+      this.flipX = false;
+    }
+
     if (runDirection === 'none') {
       super.setState(EnemyStates.IMMOVABLE);
       this.anims.play(EnemyAnims.ATTACK);
     } else {
-      this.calcMovement(runDirection, lookDirection);
+      this.calcMovement(runDirection);
     }
   }
 
@@ -131,13 +138,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     return false;
   }
 
-  private calcMovement(runDirection: 'left' | 'right' | 'none', lookDirection: 'left' | 'right') {
-    if (lookDirection === 'left') {
-      this.flipX = true;
-    } else {
-      this.flipX = false;
-    }
-
+  private calcMovement(runDirection: 'left' | 'right' | 'none') {
     if (runDirection === 'left') {
       this.anims.play(EnemyAnims.RUN, true);
       this.flipX = true;
