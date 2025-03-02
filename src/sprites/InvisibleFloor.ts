@@ -1,4 +1,4 @@
-import { MaxFloorPanels } from '@constants/game';
+import { MAX_FLOOR_PANELS } from '@constants/game';
 
 export class InvisibleFloor extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene) {
@@ -13,7 +13,7 @@ export class InvisibleFloor extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this, true);
 
     this.setVisible(false);
-    this.body?.setSize(this.scene.scale.width * MaxFloorPanels, 40);
+    this.body?.setSize(this.scene.scale.width * MAX_FLOOR_PANELS, 40);
     this.setDebug(true, true, 0x000);
   }
 }

@@ -1,6 +1,8 @@
 // How many floor panels exists. Needs for calculating maximum delta x for enemies relative to Scene center
 // Floor panel width is equal to Scene width
-export const MaxFloorPanels = 2;
+
+export const MAX_FLOOR_PANELS = 2;
+export const KEYBOARD_SPRITE_KEY = 'keyboard_keys';
 
 export enum SceneKeys {
   GAME = 'game',

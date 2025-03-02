@@ -25,7 +25,8 @@
       "@sprites/*": ["./sprites/*"],
       "@groups/*": ["./groups/*"],
       "@functions/*": ["./functions/*"],
-      "@containers/*": ["./containers/*"]
+      "@containers/*": ["./containers/*"],
+      "@managers/*": ["./managers/*"]
     }
   },
   "include": ["src"]

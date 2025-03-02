@@ -172,12 +172,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.disable(this);
     this.scene.physics.pause();
 
-    // TODO: Destroy Player when Scene changes
-    // TODO: Trigger GameOver and open a new scene
+    // TODO: Add Fullscreen button and its sprite to top right angle
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
       if (animation.key === PlayerAnims.DEATH) {
-        // this.destroy();
-
         this.scene.scene.start(SceneKeys.GAME_OVER);
       }
     });

@@ -1,6 +1,5 @@
-import { SceneKeys } from '@constants/game';
-
-const KEYBOARD_SPRITE_KEY = 'keyboard_keys';
+import { KEYBOARD_SPRITE_KEY, SceneKeys } from '@constants/game';
+import { GlobalInputManager } from '@managers/GlobalInputManager';
 
 export class Tutorial extends Phaser.Scene {
   private w: Phaser.GameObjects.Sprite;
@@ -9,9 +8,16 @@ export class Tutorial extends Phaser.Scene {
   private d: Phaser.GameObjects.Sprite;
 
   private j: Phaser.GameObjects.Sprite;
+  private f: Phaser.GameObjects.Sprite;
 
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
+  }
+
+  init() {
+    if (GlobalInputManager.hasInstance()) {
+      GlobalInputManager.getInstance().removeListeners();
+    }
   }
 
   preload() {
@@ -29,7 +35,8 @@ export class Tutorial extends Phaser.Scene {
     this.a = this.add.sprite(this.scale.width / 2 - 150 - 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
     this.s = this.add.sprite(this.scale.width / 2 - 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
     this.d = this.add.sprite(this.scale.width / 2 - 150 + 48, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
-    this.j = this.add.sprite(this.scale.width / 2 + 150, this.scale.height / 2, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.j = this.add.sprite(this.scale.width / 2 + 150, this.scale.height / 2 + 50, KEYBOARD_SPRITE_KEY).setScale(4);
+    this.f = this.add.sprite(this.scale.width / 2 + 150, this.scale.height / 2 - 50, KEYBOARD_SPRITE_KEY).setScale(4);
 
     this.w.anims.create({
       key: 'w_key',
@@ -71,6 +78,14 @@ export class Tutorial extends Phaser.Scene {
       frameRate: 1,
       repeat: -1,
     });
+    this.f.anims.create({
+      key: 'f_key',
+      frames: this.anims.generateFrameNumbers(KEYBOARD_SPRITE_KEY, {
+        frames: [21, 77],
+      }),
+      frameRate: 1,
+      repeat: -1,
+    });
 
     this.add
       .text(this.scale.width / 2 - 150, this.scale.height / 2 + 60, 'Movement', {
@@ -79,21 +94,28 @@ export class Tutorial extends Phaser.Scene {
       .setOrigin(0.5, 0.5);
 
     this.add
-      .text(this.scale.width / 2 + 150, this.scale.height / 2 + 60, 'Attack', {
+      .text(this.scale.width / 2 + 190, this.scale.height / 2 + 50, 'Attack', {
         fontSize: 24,
       })
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0, 0.5);
+
+    this.add
+      .text(this.scale.width / 2 + 190, this.scale.height / 2 - 50, 'Toggle Fullscreen', {
+        fontSize: 24,
+      })
+      .setOrigin(0, 0.5);
+  }
+
+  private keyboardCallback(event: KeyboardEvent) {
+    if (event.key !== 'f') {
+      this.input.keyboard!.off('keydown');
+      this.scene.start(SceneKeys.PRELOAD);
+    }
   }
 
   private createSceneTransition() {
     this.input.manager.enabled = true;
-    this.input.keyboard!.once(
-      'keydown',
-      () => {
-        this.scene.start(SceneKeys.PRELOAD);
-      },
-      this
-    );
+    this.input.keyboard!.on('keydown', this.keyboardCallback, this);
 
     this.time.delayedCall(2000, () => {
       const clickText = this.add
@@ -114,6 +136,7 @@ export class Tutorial extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBackgroundColor('#000');
+    GlobalInputManager.init();
     this.createKeyAnimations();
     this.createSceneTransition();
   }
@@ -124,5 +147,6 @@ export class Tutorial extends Phaser.Scene {
     this.s.anims.play('s_key', true);
     this.d.anims.play('d_key', true);
     this.j.anims.play('j_key', true);
+    this.f.anims.play('f_key', true);
   }
 }

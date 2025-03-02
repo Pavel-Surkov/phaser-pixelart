@@ -1,5 +1,5 @@
 import { EnemyAnims, EnemyStates } from '@constants/enemies';
-import { GlobalEvents, MaxFloorPanels, RegistryKeys } from '@constants/game';
+import { GlobalEvents, MAX_FLOOR_PANELS, RegistryKeys } from '@constants/game';
 
 type EnemySpriteKeys = {
   idle: string;
@@ -116,7 +116,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   private calcHasMaxDeltaX() {
     const reliabilityDelta = 40;
-    const maxDeltaX = this.scene.scale.width * MaxFloorPanels;
+    const maxDeltaX = this.scene.scale.width * MAX_FLOOR_PANELS;
     const centerDeltaX = this.x + this.parentContainer.x - this.scene.scale.width / 2;
     const absoluteMaximumLimitX = maxDeltaX / 2 - reliabilityDelta;
 
