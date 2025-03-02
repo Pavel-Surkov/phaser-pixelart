@@ -8,7 +8,7 @@ type EnemySpriteKeys = {
   death: string;
 };
 
-// TODO: Add 2 HP to Mushroom and faster speed for Goblin
+// TODO: Add 2 HP to Mushroom
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   public hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   public initialPosition: number;
@@ -103,9 +103,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       Math.abs(playerRelativePosX) - this.attackRange <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
     this.setVelocityX(runDirection === 'right' ? velocityX : runDirection === 'left' ? -velocityX : 0);
 
-    const hasMaxDeltaX = this.calcHasMaxDeltaX();
-
-    if (hasMaxDeltaX) return;
+    const collidesCustomWorldBounds = this.keepEnemyInsideCustomWorldBounds();
+    // No need to play animations, toggle flipX etc. if Enemy is outside the screen
+    if (collidesCustomWorldBounds) return;
 
     if (lookDirection === 'left') {
       this.flipX = true;
@@ -121,7 +121,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private calcHasMaxDeltaX() {
+  private keepEnemyInsideCustomWorldBounds() {
     const reliabilityDelta = 40;
     const maxDeltaX = this.scene.scale.width * MAX_FLOOR_PANELS;
     const centerDeltaX = this.x + this.parentContainer.x - this.scene.scale.width / 2;
@@ -131,7 +131,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       const newAbsolutePosX = maxDeltaX - reliabilityDelta - this.parentContainer.x;
       this.x =
         centerDeltaX < absoluteMaximumLimitX ? newAbsolutePosX - maxDeltaX + reliabilityDelta * 2 : newAbsolutePosX;
-
       return true;
     }
 
