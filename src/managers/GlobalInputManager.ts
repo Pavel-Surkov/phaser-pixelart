@@ -1,3 +1,4 @@
+import { checkWindowSize } from '@functions/checkWindowSize';
 import { toggleFullscreen } from '@functions/toggleFullscreen';
 
 export class GlobalInputManager {
@@ -5,9 +6,13 @@ export class GlobalInputManager {
   private keyDownCallback: (event: KeyboardEvent) => void;
 
   private constructor() {
+    // Check window size while loading
+    checkWindowSize();
+
     // Set up global listeners for key events
     this.keyDownCallback = this.onKeyDown.bind(this);
     document.addEventListener('keydown', this.keyDownCallback);
+    window.addEventListener('resize', checkWindowSize);
   }
 
   public static init() {
@@ -33,5 +38,6 @@ export class GlobalInputManager {
   public removeListeners(): void {
     // Remove event listeners when the manager is no longer needed
     document.removeEventListener('keydown', this.keyDownCallback);
+    window.removeEventListener('resize', checkWindowSize);
   }
 }

@@ -21,6 +21,6 @@ export class Preload extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.fadeIn(2000, 0, 0, 0, () => this.scene.remove(SceneKeys.TUTORIAL), this);
+    this.cameras.main.fadeIn(1000, 0, 0, 0, () => this.scene.remove(SceneKeys.TUTORIAL), this);
   }
 }

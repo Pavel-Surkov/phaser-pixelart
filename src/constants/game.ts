@@ -3,6 +3,7 @@
 
 export const MAX_FLOOR_PANELS = 2;
 export const KEYBOARD_SPRITE_KEY = 'keyboard_keys';
+export const MIN_SCREEN_WIDTH = 1200;
 
 export enum SceneKeys {
   GAME = 'game',

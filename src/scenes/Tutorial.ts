@@ -135,6 +135,7 @@ export class Tutorial extends Phaser.Scene {
   }
 
   create() {
+    console.log(this.input.keyboard);
     this.cameras.main.setBackgroundColor('#000');
     GlobalInputManager.init();
     this.createKeyAnimations();

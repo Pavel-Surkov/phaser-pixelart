@@ -1,8 +1,18 @@
+@font-face {
+  font-family: 'Silver';
+  font-weight: 400;
+  font-style: normal;
+
+  src: url('./assets/fonts/Silver.woff2') format('woff2');
+}
+
+html,
 body {
   margin: 0;
   padding: 0;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
+  background-color: #000;
+  font-family: 'Silver', 'Arial', sans-serif;
 }
 
 #app {
@@ -12,4 +22,27 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.blocker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  transition: opacity 0.3s;
+  opacity: 1;
+}
+
+.blocker p {
+  font-size: 10vw;
+}
+
+.blocker_hidden {
+  opacity: 0;
+  pointer-events: none;
 }
