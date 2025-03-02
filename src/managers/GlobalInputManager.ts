@@ -10,18 +10,18 @@ export class GlobalInputManager {
     document.addEventListener('keydown', this.keyDownCallback);
   }
 
+  public static init() {
+    if (!GlobalInputManager.instance) {
+      GlobalInputManager.instance = new GlobalInputManager();
+    }
+  }
+
   public static hasInstance() {
     return !!GlobalInputManager.instance;
   }
 
   public static getInstance(): GlobalInputManager {
     return GlobalInputManager.instance;
-  }
-
-  public static init() {
-    if (!GlobalInputManager.instance) {
-      GlobalInputManager.instance = new GlobalInputManager();
-    }
   }
 
   private onKeyDown(event: KeyboardEvent): void {

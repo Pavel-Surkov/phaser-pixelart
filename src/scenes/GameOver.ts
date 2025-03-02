@@ -1,4 +1,5 @@
 import { SceneKeys } from '@constants/game';
+import { HighScoreManager } from '@managers/HighScoreManager';
 
 export class GameOver extends Phaser.Scene {
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
@@ -11,6 +12,14 @@ export class GameOver extends Phaser.Scene {
     this.registry.destroy();
     this.scene.stop(SceneKeys.GAME);
     this.createSceneTransition();
+
+    this.add
+      .text(this.scale.width / 2, 200, `Your highscore: ${HighScoreManager.getScore()}`, {
+        fontFamily: 'silver',
+        fontSize: 80,
+      })
+      .setOrigin(0.5, 0.5)
+      .setDepth(5);
   }
 
   private createSceneTransition() {

@@ -1,3 +1,4 @@
+import { HighScoreManager } from '@managers/HighScoreManager';
 import { Player } from '@sprites/Player';
 import { Foreground } from '@groups/foreground';
 import { InvisibleFloor } from '@sprites/InvisibleFloor';
@@ -13,7 +14,6 @@ export class Game extends Phaser.Scene {
   public player: Player;
   public floor: InvisibleFloor;
   public layer: Phaser.GameObjects.Layer;
-  public gameOver = false;
 
   constructor(config: Phaser.Types.Scenes.SettingsConfig) {
     super(config);
@@ -24,6 +24,7 @@ export class Game extends Phaser.Scene {
     this.registry.set(RegistryKeys.WORLD_COORD_X, 0);
 
     this.events.off(GlobalEvents.SCORE_INC);
+    this.events.off(GlobalEvents.GAME_OVER);
     this.scene.scene.events.off('updateWorldCoordX');
 
     this.scoreText = this.add.text(this.scale.width / 2, 100, '0', { fontFamily: 'silver', fontSize: 80 }).setDepth(5);
@@ -35,13 +36,14 @@ export class Game extends Phaser.Scene {
     !this.sound.isPlaying('loop') && this.sound.play('loop');
 
     this.events.on(GlobalEvents.SCORE_INC, () => this.scoreText.setText(String(+this.scoreText.text + 1)), this);
+    this.events.on(GlobalEvents.GAME_OVER, () => HighScoreManager.setScore(this.scoreText.text), this);
 
     new Background(this);
     new Foreground(this);
     this.floor = new InvisibleFloor(this);
     this.enemies = new Enemies(this, [this.floor]);
 
-    this.player = new Player(this, this.scale.width / 2, 450, this.enemies);
+    this.player = new Player(this, this.scale.width / 2, 550, this.enemies);
     this.physics.add.collider(this.player, this.floor);
     this.enemies.bindAttack(this.player);
   }

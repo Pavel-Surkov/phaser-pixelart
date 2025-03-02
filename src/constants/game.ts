@@ -33,4 +33,5 @@ export enum BgLayers {
 
 export enum GlobalEvents {
   SCORE_INC = 'score_inc',
+  GAME_OVER = 'game_over',
 }

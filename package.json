@@ -20,6 +20,7 @@
     "build-nolog": "vite build --config vite/config.prod.mjs"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "prettier": "^3.5.1",
     "terser": "^5.31.0",
     "typescript": "^5.4.5",
@@ -27,6 +28,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "phaser": "^3.87.0"
   }
 }

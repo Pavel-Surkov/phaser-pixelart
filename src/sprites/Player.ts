@@ -1,4 +1,4 @@
-import { RegistryKeys, SceneKeys } from '@constants/game';
+import { GlobalEvents, RegistryKeys, SceneKeys } from '@constants/game';
 import { CustomCursorKeys, PlayerAnims, PlayerSprites, PlayerStates } from '@constants/player';
 import Phaser from 'phaser';
 import { Enemy } from './enemies/Enemy';
@@ -171,8 +171,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(PlayerAnims.DEATH);
     this.scene.physics.world.disable(this);
     this.scene.physics.pause();
+    this.scene.events.emit(GlobalEvents.GAME_OVER);
 
-    // TODO: Add Fullscreen button and its sprite to top right angle
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, (animation: Phaser.Animations.Animation) => {
       if (animation.key === PlayerAnims.DEATH) {
         this.scene.scene.start(SceneKeys.GAME_OVER);
