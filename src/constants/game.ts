@@ -2,13 +2,8 @@
 // Floor panel width is equal to Scene width
 
 export const MAX_FLOOR_PANELS = 2;
-export const KEYBOARD_LETTERS_KEY = 'keyboard_keys';
+export const KEYBOARD_SPRITE_KEY = 'keyboard_keys';
 export const MIN_SCREEN_WIDTH = 998;
-
-export enum KeyboardKeys {
-  LETTERS = 'keyboard_letters',
-  EXTRAS = 'keyboard_extras',
-}
 
 export enum SceneKeys {
   GAME = 'game',

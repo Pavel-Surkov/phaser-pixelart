@@ -22,11 +22,9 @@ export enum PlayerAnims {
 }
 
 export type CustomCursorKeys = {
-  prUp: Phaser.Input.Keyboard.Key;
-  secUp: Phaser.Input.Keyboard.Key;
-  prLeft: Phaser.Input.Keyboard.Key;
-  secLeft: Phaser.Input.Keyboard.Key;
-  prRight: Phaser.Input.Keyboard.Key;
-  secRight: Phaser.Input.Keyboard.Key;
+  up: Phaser.Input.Keyboard.Key;
+  down: Phaser.Input.Keyboard.Key;
+  left: Phaser.Input.Keyboard.Key;
+  right: Phaser.Input.Keyboard.Key;
   attack: Phaser.Input.Keyboard.Key;
 };

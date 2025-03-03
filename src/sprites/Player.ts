@@ -30,12 +30,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.cameras.main.setBounds(0, 0, scene.scale.width, scene.scale.height, true);
 
     this.cursor = scene.input.keyboard!.addKeys({
-      prUp: Phaser.Input.Keyboard.KeyCodes.W,
-      secUp: Phaser.Input.Keyboard.KeyCodes.UP,
-      prLeft: Phaser.Input.Keyboard.KeyCodes.A,
-      secLeft: Phaser.Input.Keyboard.KeyCodes.LEFT,
-      prRight: Phaser.Input.Keyboard.KeyCodes.D,
-      secRight: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
       attack: Phaser.Input.Keyboard.KeyCodes.J,
     }) as CustomCursorKeys;
   }
@@ -201,7 +199,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if (this.cursor.prLeft.isDown || this.cursor.secLeft.isDown) {
+    if (this.cursor.left.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(true);
 
@@ -210,7 +208,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         Math.round((-this.velocityX * this.scene.game.loop.delta) / 1000)
       );
       this.scene.events.emit('updateWorldCoordX', false);
-    } else if (this.cursor.prRight.isDown || this.cursor.secRight.isDown) {
+    } else if (this.cursor.right.isDown) {
       this.anims.play(PlayerAnims.RUN, true);
       this.setFlipX(false);
 
@@ -223,7 +221,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(PlayerAnims.IDLE, true);
     }
 
-    if (this.body?.touching.down && (this.cursor.prUp.isDown || this.cursor.secUp.isDown)) {
+    if (this.cursor.up.isDown && this.body?.touching.down) {
       this.setVelocityY(-this.velocityY);
     }
   }
