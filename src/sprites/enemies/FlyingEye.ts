@@ -2,7 +2,7 @@ import { EnemyAnims, EnemyStates, EyeSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class FlyingEye extends Enemy {
-  public velocityX = 220;
+  public velocityX = 210;
   public attackRange = 40;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

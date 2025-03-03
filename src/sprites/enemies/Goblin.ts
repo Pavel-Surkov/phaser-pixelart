@@ -2,7 +2,7 @@ import { EnemyAnims, EnemyStates, GoblinSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class Goblin extends Enemy {
-  public velocityX = 150;
+  public velocityX = 170;
   public attackRange = 70;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

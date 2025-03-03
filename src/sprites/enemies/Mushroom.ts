@@ -2,7 +2,7 @@ import { EnemyAnims, EnemyStates, MushroomSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class Mushroom extends Enemy {
-  public velocityX = 165;
+  public velocityX = 160;
   public attackRange = 60;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

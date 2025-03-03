@@ -94,6 +94,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    const enemyVelocityX = velocityX * 1.3;
+
     const worldCoordX = this.scene.registry.get(RegistryKeys.WORLD_COORD_X);
     const playerRelativePosX = this.scene.scale.width / 2 + worldCoordX * 1.3 - this.x;
 
@@ -101,7 +103,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     const runDirection =
       Math.abs(playerRelativePosX) - this.attackRange <= 0 ? 'none' : playerRelativePosX > 0 ? 'right' : 'left';
-    this.setVelocityX(runDirection === 'right' ? velocityX : runDirection === 'left' ? -velocityX : 0);
+    this.setVelocityX(runDirection === 'right' ? enemyVelocityX : runDirection === 'left' ? -enemyVelocityX : 0);
 
     const collidesCustomWorldBounds = this.keepEnemyInsideCustomWorldBounds();
     // No need to play animations, toggle flipX etc. if Enemy is outside the screen
