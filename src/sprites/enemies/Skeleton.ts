@@ -2,7 +2,7 @@ import { EnemyAnims, EnemyStates, SkeletonSprites } from '@constants/enemies';
 import { Enemy } from './Enemy';
 
 export class Skeleton extends Enemy {
-  public velocityX = 100;
+  public velocityX = 110;
   public attackRange = 80;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

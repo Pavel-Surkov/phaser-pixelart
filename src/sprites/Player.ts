@@ -11,7 +11,7 @@ import { Enemies } from '@groups/enemies';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private velocityX = 180;
-  private velocityY = 320;
+  private velocityY = 355;
   private cursor: CustomCursorKeys;
 
   private hitArea: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
